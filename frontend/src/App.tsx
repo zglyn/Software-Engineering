@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { UploadProvider } from './context/UploadContext';
+import HomePage from './HomePage';
+import FeedPage from './FeedPage';
+import VideoPage from './pages/VideoPage';
+import MyUploadsPage from './pages/MyUploadsPage';
+import PlayerStatsPage from './pages/PlayerStatsPage';
+import TeamStatsPage from './pages/TeamStatsPage';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <UploadProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/feed" element={<FeedPage />} />
+          <Route path="/uploads" element={<MyUploadsPage />} />
+          <Route path="/video/:id" element={<VideoPage />} />
+          <Route path="/player/:id" element={<PlayerStatsPage />} />
+          <Route path="/team/:id" element={<TeamStatsPage />} />
+        </Routes>
+      </UploadProvider>
+    </Router>
   );
-}
+};
 
 export default App;

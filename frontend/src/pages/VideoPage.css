@@ -1,0 +1,223 @@
+.videoPage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0f0f12 0%, #1a1a1f 100%);
+  color: #f4f4f5;
+}
+
+.videoPageHeader {
+  padding: 16px 24px;
+  border-bottom: 1px solid #2d2d35;
+}
+
+.videoPageBack {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.videoPageBack:hover {
+  color: #c4b5fd;
+}
+
+.videoPageContent {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+.videoPageTitle {
+  margin: 0 0 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.videoThumbWrap {
+  margin-bottom: 16px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1a1a1f;
+  border: 1px solid #2d2d35;
+}
+
+.videoThumbImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+.videoThumbPlaceholder {
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b6b72;
+  font-size: 0.9rem;
+}
+
+.videoPageUserMessage {
+  margin: 0 0 20px;
+  color: #d1d5db;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.videoPageMessage {
+  margin: 0 0 16px;
+  color: #9ca3af;
+}
+
+.videoPendingBlock {
+  padding: 24px;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 10px;
+}
+
+.videoPendingText {
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: #a5b4fc;
+}
+
+.videoPendingSub {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.videoStats {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.videoStatSection {
+  background: #1a1a1f;
+  border: 1px solid #2d2d35;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.videoStatSectionTitle {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.videoShotSummary {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.videoShotSummaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.videoShotLabel {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.videoShotValue {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+.videoZoneTableWrap {
+  overflow-x: auto;
+}
+
+.videoZoneTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.videoZoneTable th,
+.videoZoneTable td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #2d2d35;
+}
+
+.videoZoneTable th {
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.videoZoneTable td {
+  color: #e5e7eb;
+}
+
+.videoZoneTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.videoDefensiveGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.videoDefensiveCard {
+  padding: 14px;
+  background: #0f0f12;
+  border-radius: 8px;
+  border: 1px solid #2d2d35;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.videoDefensiveLabel {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.videoDefensiveValue {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+.videoKeyStatsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.videoKeyStatItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.videoKeyStatLabel {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.videoKeyStatValue {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.videoHeatmapWrap {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0f0f12;
+}
+
+.videoHeatmapImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
