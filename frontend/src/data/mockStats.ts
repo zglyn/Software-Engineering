@@ -9,6 +9,7 @@ export interface PlayerPageData {
   name: string;
   position: string;
   gameContext?: string;
+  overallRanking?: number;
   stats: PlayerStatsRow[];
   shooting?: PlayerStatsRow[];
   advanced?: PlayerStatsRow[];
@@ -29,6 +30,7 @@ export interface TeamPageData {
   id: string;
   name: string;
   record: string;
+  overallRanking?: number;
   metrics: TeamMetric[];
   advancedMetrics?: TeamMetric[];
   trend: string;
@@ -40,6 +42,7 @@ export const PLAYERS_BY_ID: Record<string, PlayerPageData> = {
     id: 'lebron-james',
     name: 'LeBron James',
     position: 'F',
+    overallRanking: 5,
     gameContext: 'vs Celtics, Feb 26',
     stats: [
       { label: 'PTS', value: 28, trend: 'up' },
@@ -67,6 +70,7 @@ export const PLAYERS_BY_ID: Record<string, PlayerPageData> = {
     id: 'anthony-davis',
     name: 'Anthony Davis',
     position: 'F/C',
+    overallRanking: 72,
     gameContext: 'vs Celtics, Feb 26',
     stats: [
       { label: 'PTS', value: 25, trend: 'up' },
@@ -92,6 +96,7 @@ export const PLAYERS_BY_ID: Record<string, PlayerPageData> = {
     id: 'austin-reaves',
     name: 'Austin Reaves',
     position: 'G',
+    overallRanking: 69,
     gameContext: 'vs Celtics, Feb 26',
     stats: [
       { label: 'PTS', value: 18, trend: 'up' },
@@ -114,6 +119,7 @@ export const PLAYERS_BY_ID: Record<string, PlayerPageData> = {
     id: 'jayson-tatum',
     name: 'Jayson Tatum',
     position: 'F',
+    overallRanking: 51,
     gameContext: 'vs Heat, Feb 26',
     stats: [
       { label: 'PTS', value: 31, trend: 'up' },
@@ -137,6 +143,7 @@ export const PLAYERS_BY_ID: Record<string, PlayerPageData> = {
     id: 'jaylen-brown',
     name: 'Jaylen Brown',
     position: 'G/F',
+    overallRanking: 420,
     gameContext: 'vs Heat, Feb 26',
     stats: [
       { label: 'PTS', value: 24, trend: 'neutral' },
@@ -161,6 +168,7 @@ export const TEAMS_BY_ID: Record<string, TeamPageData> = {
     id: 'lakers',
     name: 'Los Angeles Lakers',
     record: '35–25',
+    overallRanking: 1,
     metrics: [
       { label: 'PPG', value: '114.2' },
       { label: 'Def Rtg', value: '110.1' },

@@ -26,6 +26,12 @@ const ComparePage: React.FC = () => {
     return statObj ? statObj.value : '-';
   };
 
+  const getOverallRanking = (playerId: string) => {
+  if (!playerId) return '-';
+    const rank = PLAYERS_BY_ID[playerId]?.overallRanking;
+    return rank ? `#${rank}` : 'N/A';
+  };
+
   const getTeamMetric = (teamId: string, category: 'metrics' | 'advancedMetrics', label: string) => {
     if (!teamId) return '-';
     const team = TEAMS_BY_ID[teamId];
@@ -102,6 +108,13 @@ const ComparePage: React.FC = () => {
 
             {mode === 'players' ? (
               <>
+                <div className="compareSectionTitle">General Ranking</div>
+                <div className="compareTableRow">
+                <div className="compareColItem">{getOverallRanking(id1)}</div>
+                <div className="compareColLabel">Overall Rank</div>
+                <div className="compareColItem">{getOverallRanking(id2)}</div>
+                </div>
+
                 <div className="compareSectionTitle">Per Game Stats</div>
                 {playerBaseStats.map(label => (
                   <div className="compareTableRow" key={label}>
