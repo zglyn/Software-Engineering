@@ -36,7 +36,7 @@ const HomePage: React.FC = () => {
 
          <input
           className='roundedBox'
-          type="text"
+          type="password"
           placeholder="Password" 
           value={passvalue}
           onChange={(e) => setPassValue(e.target.value)}
@@ -50,11 +50,6 @@ const HomePage: React.FC = () => {
           Login
           </button>
         </div>
-        
-        
-
-
-        
     </div>
   );
 };

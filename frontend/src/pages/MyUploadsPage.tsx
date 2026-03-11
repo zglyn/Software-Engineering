@@ -1,16 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUpload } from '../context/UploadContext';
 import './MyUploadsPage.css';
 
 export default function MyUploadsPage() {
   const { videos } = useUpload();
   const list = Object.values(videos).sort((a, b) => b.createdAt - a.createdAt);
+  const navigate = useNavigate();
 
   return (
     <div className="myUploadsPage">
       <header className="myUploadsHeader">
-        <Link to="/feed" className="myUploadsBack">← Feed</Link>
+        <button type="button" className="myUploadsBack" onClick={() => navigate(-1)}>← Back</button>
         <h1 className="myUploadsTitle">My Uploads</h1>
       </header>
       <div className="myUploadsContent">

@@ -26,12 +26,12 @@ export default function PlayersPage() {
             </div>
           </Link>
 
-          <div className="playersPageCard">
+          <Link to="/uploads" className="playersPageCard">
             <div className="playersPageCardTitle">My Uploads</div>
             <div className="playersPageCardText">
               View uploaded clips and track processing status.
             </div>
-          </div>
+          </Link>
 
           <div className="playersPageCard">
             <div className="playersPageCardTitle">Profile Controls</div>
