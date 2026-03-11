@@ -127,7 +127,7 @@ const FOR_YOU_MOCK: FeedItem[] = [
   {
     id: 'fy-7',
     type: 'comparison',
-    title: 'Compare players',
+    title: 'Compare Players',
     timestamp: '12 hours ago',
     comparison: { label: 'LeBron James vs Anthony Davis', statA: '28 PPG · 8 REB · 7 AST', statB: '24 PPG · 12 REB · 3 AST' }
   },
@@ -236,7 +236,7 @@ const FOLLOWING_MOCK: FeedItem[] = [
   {
     id: 'fw-5',
     type: 'comparison',
-    title: 'Compare players',
+    title: 'Compare Players',
     timestamp: '8 hours ago',
     comparison: { label: 'Jayson Tatum vs Jaylen Brown', statA: '31 PPG · 8 REB · 5 AST', statB: '24 PPG · 6 REB · 4 AST' }
   },
@@ -514,14 +514,20 @@ const FeedPage: React.FC = () => {
           {profileDropdownOpen && (
             <div className="feedProfileDropdown">
               <Link to="/uploads" className="feedProfileDropdownItem" onClick={() => setProfileDropdownOpen(false)}>My Uploads</Link>
-              <button type="button" className="feedProfileDropdownItem" onClick={() => setProfileDropdownOpen(false)}>My Profile</button>
+              <button type="button" className="feedProfileDropdownItem" onClick={() => { setProfileDropdownOpen(false); navigate('/profile'); }}>My Profile</button>
               <button type="button" className="feedProfileDropdownItem" onClick={() => setProfileDropdownOpen(false)}>Sign Out</button>
             </div>
           )}
         </div>
       </header>
 
-      <div className="feedPage">
+      <aside className="feedSidebar">
+        <Link to="/compare" className="feedSidebarBtn">Compare Players</Link>
+        <Link to="/insights" className="feedSidebarBtn">Team Insights</Link>
+      </aside>
+
+      <div className="feedLayout">
+        <div className="feedPage">
       <div className="feedTabs">
         <button
           className={`feedTab ${activeTab === 'forYou' ? 'feedTabActive' : ''}`}
@@ -544,6 +550,7 @@ const FeedPage: React.FC = () => {
         <div ref={sentinelRef} className="feedSentinel" />
         {loading && <div className="feedLoader">Loading...</div>}
       </main>
+        </div>
       </div>
       <button
         type="button"

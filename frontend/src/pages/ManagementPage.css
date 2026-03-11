@@ -31,11 +31,11 @@
   }
   
   .managementPageTitle {
-    margin: 0 0 8px;
+    margin: 0 0 12px;
     font-size: 1.8rem;
     font-weight: 600;
   }
-  
+
   .managementPageSubtitle {
     margin: 0 0 24px;
     color: #d1d5db;

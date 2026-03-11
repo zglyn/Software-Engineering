@@ -70,18 +70,68 @@
   margin-left: auto;
 }
 
-.feedPage {
+.feedLayout {
   width: 60%;
+  max-width: 640px;
   margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.feedSidebar {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feedSidebarBtn {
+  background: none;
+  border: none;
+  padding: 14px 18px;
+  font-size: 1.05rem;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: #e5e7eb;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.feedSidebarBtn:hover {
+  background: #2d2d35;
+  color: #f4f4f5;
+}
+
+.feedPage {
+  flex: 1;
+  min-width: 0;
   padding: 0 0 48px;
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
-  .feedPage {
+  .feedLayout {
     width: 90%;
-    padding-left: 5%;
-    padding-right: 5%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .feedSidebar {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    width: 100%;
+    gap: 16px;
+    padding: 12px 0;
+    justify-content: center;
+  }
+  .feedPage {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 

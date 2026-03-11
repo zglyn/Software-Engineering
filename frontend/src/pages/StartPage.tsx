@@ -9,7 +9,7 @@ export default function StartPage() {
   const navigate = useNavigate();
 
   const goNext = () => {
-    if (selected === "PUBLIC") navigate("/public");
+    if (selected === "PUBLIC") navigate("/feed");
     if (selected === "PLAYER") navigate("/players");
     if (selected === "MANAGEMENT") navigate("/management");
   };
@@ -68,6 +68,7 @@ export default function StartPage() {
             Continue
           </button>
         </div>
+
       </div>
     </div>
   );

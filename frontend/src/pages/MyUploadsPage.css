@@ -11,10 +11,15 @@
 
 .myUploadsBack {
   display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
   color: #9ca3af;
   text-decoration: none;
   font-size: 0.9rem;
+  font-family: inherit;
   margin-bottom: 8px;
+  cursor: pointer;
 }
 
 .myUploadsBack:hover {

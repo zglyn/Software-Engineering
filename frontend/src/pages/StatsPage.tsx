@@ -77,7 +77,7 @@ export default function StatsPage() {
           Tag players, set privacy, and publish game-by-game updates.
         </p>
 
-        <section className="statsPageSection">
+        {/* <section className="statsPageSection">
           <h2 className="statsPageSectionTitle">Connected Pages</h2>
 
           <div className="statsPostList">
@@ -109,7 +109,7 @@ export default function StatsPage() {
               </div>
             </Link>
           </div>
-        </section>
+        </section> */}
 
         <section className="statsPageSection">
           <h2 className="statsPageSectionTitle">Create Stat Post</h2>
