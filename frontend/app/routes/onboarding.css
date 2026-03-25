@@ -1,0 +1,213 @@
+.onboardingPage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0f0f12 0%, #1a1a1f 100%);
+  color: #f4f4f5;
+}
+
+.onboardingHeader {
+  padding: 28px 24px 12px;
+  border-bottom: 1px solid #2d2d35;
+}
+
+.onboardingInner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.onboardingEyebrow {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.onboardingTitle {
+  margin: 0 0 8px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.onboardingSubtitle {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 0.98rem;
+}
+
+.onboardingContent {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
+}
+
+.onboardingFormError {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #1a1a1f;
+  border: 1px solid #ef4444;
+  color: #f87171;
+  font-size: 0.93rem;
+  margin-bottom: 24px;
+}
+
+.onboardingSection {
+  margin-bottom: 28px;
+}
+
+.onboardingSectionTitle {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #2d2d35;
+}
+
+.onboardingField {
+  margin-bottom: 18px;
+}
+
+.onboardingLabel {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #d1d5db;
+  margin-bottom: 6px;
+}
+
+.onboardingInput {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #2d2d35;
+  background: #1a1a1f;
+  color: #f4f4f5;
+  font-size: 0.97rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.onboardingInput:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+.onboardingInputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.onboardingInputWithIcon {
+  padding-right: 40px;
+}
+
+.onboardingInputReadonly {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #2d2d35;
+  background: #1a1a1f;
+  color: #f4f4f5;
+  font-size: 0.97rem;
+  box-sizing: border-box;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.onboardingInputPlaceholder {
+  color: #6b7280;
+}
+
+.onboardingPencilBtn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.onboardingPencilBtn:hover {
+  color: #f4f4f5;
+  background: #2d2d35;
+}
+
+.onboardingPencilBtnActive {
+  color: #6366f1;
+}
+
+.onboardingInputError {
+  border-color: #ef4444;
+}
+
+.onboardingInputError:focus {
+  border-color: #ef4444;
+}
+
+.onboardingFieldError {
+  margin-top: 5px;
+  font-size: 0.83rem;
+  color: #f87171;
+}
+
+.onboardingRadioGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.onboardingRadioCard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #2d2d35;
+  background: #1a1a1f;
+  color: #e5e7eb;
+  cursor: pointer;
+  font-size: 0.93rem;
+  transition: border-color 0.2s ease;
+  user-select: none;
+}
+
+.onboardingRadioCard input[type="radio"] {
+  accent-color: #6366f1;
+}
+
+.onboardingRadioCardSelected {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px #6366f1;
+}
+
+.onboardingActions {
+  margin-top: 32px;
+}
+
+.onboardingSubmit {
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: none;
+  background: #6366f1;
+  color: #f4f4f5;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.onboardingSubmit:hover {
+  opacity: 0.88;
+}
+
+.onboardingSubmit:disabled {
+  background: #2d2d35;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 1;
+}
