@@ -1,0 +1,159 @@
+.createTeamWrapper {
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.createTeamContainer {
+  width: 100%;
+  max-width: 540px;
+}
+
+.createTeamHeader {
+  margin-bottom: 24px;
+}
+
+.createTeamTitle {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.createTeamSubtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #a1a1aa;
+}
+
+.createTeamCard {
+  background: #1e1e24;
+  border: 1px solid #2d2d33;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.createTeamLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #d1d5db;
+}
+
+.createTeamInput,
+.createTeamTextarea {
+  background: #0f0f12;
+  border: 1px solid #2d2d35;
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #f4f4f5;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.createTeamInput::placeholder,
+.createTeamTextarea::placeholder {
+  color: #6b6b72;
+}
+
+.createTeamInput:focus,
+.createTeamTextarea:focus {
+  border-color: #6366f1;
+}
+
+.createTeamTextarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.createTeamToggleWrap {
+  background: #16161a;
+  border: 1px solid #2d2d35;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.createTeamCheckboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.createTeamCheckbox {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+  accent-color: #6366f1;
+  cursor: pointer;
+}
+
+.createTeamToggleText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.createTeamToggleText strong {
+  color: #f4f4f5;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.createTeamToggleText small {
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.createTeamFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid #2d2d35;
+}
+
+.createTeamBtn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.createTeamBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.createTeamBtnSecondary {
+  background: #2d2d35;
+  color: #e5e7eb;
+}
+
+.createTeamBtnSecondary:hover:not(:disabled) {
+  background: #3d3d45;
+}
+
+.createTeamBtnPrimary {
+  background: #6366f1;
+  color: #fff;
+}
+
+.createTeamBtnPrimary:hover:not(:disabled) {
+  background: #5558e3;
+}
