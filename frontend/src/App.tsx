@@ -10,6 +10,8 @@ import TeamStatsPage from './pages/TeamStatsPage';
 import CreateTeamPage from './pages/CreateTeamPage';
 import ComparePage from './pages/ComparePage';
 import InsightsPage from './pages/InsightsPage';
+import ManageCoachesPage from './pages/ManageCoachesPage';
+import ManagePlayersPage from './pages/ManagePlayersPage';
 
 const App: React.FC = () => {
   return (
@@ -25,6 +27,8 @@ const App: React.FC = () => {
           <Route path="/create-team" element={<CreateTeamPage />} />
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/insights" element={<InsightsPage />} />
+          <Route path="/manage-coaches" element={<ManageCoachesPage />} />
+          <Route path="/manage-players" element={<ManagePlayersPage />} />
         </Routes>
       </UploadProvider>
     </Router>
