@@ -1,0 +1,17 @@
+$kind: collection
+name: Baller API
+description: |-
+  API collection for Baller.
+  This collection handles backend HTTP requests (GET, POST, DELETE) 
+  for managing Teams and Players, connecting our Node.js/Express 
+  backend to AWS DynamoDB.
+variables:
+  - key: baseUrl
+    value: 'http://localhost:5000/api'
+    description: The base URL for the local Express dev server.
+  - key: currentUserId
+    value: ''
+    description: Automatically populated by the POST /users test script.
+  - key: currentTeamId
+    value: ''
+    description: Automatically populated by the POST /teams test script.
