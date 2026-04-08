@@ -1,0 +1,29 @@
+$kind: http-request
+name: "{{baseUrl}}/Users"
+url: htpp://localhost:5000/api/teams
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"teamid\": \"astros\",\r
+
+    \    \"name\": \"idk basketbal;\",\r
+
+    \    \"overallRanking\": 2,\r
+
+    \    \"record\": \"25-35\", \r
+
+    \    \"roster\": [\"big basketball man\",\"small basketball
+    man\",\"med-basketball-man\"]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \  pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 1552914928631807
