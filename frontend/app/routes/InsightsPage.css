@@ -1,0 +1,258 @@
+.insightsPageWrapper {
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  background-color: #0f0f12;
+  color: #f4f4f5;
+  padding: 0 0 48px;
+}
+
+.insightsHeader {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #2d2d33;
+  background: #1e1e24;
+  margin-bottom: 24px;
+}
+
+.insightsBackBtn {
+  text-decoration: none;
+  color: #a1a1aa;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-right: 20px;
+  transition: color 0.2s ease;
+}
+
+.insightsBackBtn:hover {
+  color: #f4f4f5;
+}
+
+.insightsTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.insightsContainer {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.insightsControls {
+  background: #1e1e24;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #2d2d33;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.insightsLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.insightsSelect {
+  width: 100%;
+  max-width: 300px;
+  background: #0f0f12;
+  border: 1px solid #3d3d45;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #f4f4f5;
+  font-size: 0.95rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.insightsSelect:focus {
+  border-color: #6366f1;
+}
+
+.insightsGrid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .insightsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.insightsCard {
+  background: #1e1e24;
+  border: 1px solid #2d2d33;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.insightsCardTitle {
+  margin: 0 0 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f4f4f5;
+  border-bottom: 1px solid #2d2d33;
+  padding-bottom: 12px;
+}
+
+.insightsRecordBlock {
+  text-align: center;
+  padding: 20px 0;
+  background: #16161a;
+  border-radius: 8px;
+  border: 1px solid #2d2d33;
+  margin-bottom: 20px;
+}
+
+.insightsRecordValue {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #6366f1;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.insightsRecordLabel {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.insightsMetricsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.insightsMetricItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #27272a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #3d3d45;
+}
+
+.insightsMetricLabel {
+  font-size: 0.9rem;
+  color: #d1d5db;
+}
+
+.insightsMetricValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.insightsChartCard {
+  min-height: 350px;
+}
+
+.insightsChartLegend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendBox {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.legendBox.scored { background: #6366f1; }
+.legendBox.allowed { background: #f43f5e; }
+
+.insightsChart {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 20px;
+  gap: 12px;
+  border-bottom: 1px solid #3d3d45;
+  padding-bottom: 12px;
+}
+
+.chartColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 200px;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.barGroup {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.bar {
+  width: 35%;
+  max-width: 40px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  transition: height 0.3s ease;
+}
+
+.scoredBar { background: #6366f1; }
+.allowedBar { background: #f43f5e; }
+
+.barTooltip {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.chartXAxis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.gameResult {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.textWin { color: #10b981; }
+.textLoss { color: #f43f5e; }
