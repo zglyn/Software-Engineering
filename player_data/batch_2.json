@@ -1,0 +1,65 @@
+{
+    "Players": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1630574"
+                    },
+                    "team_id": {
+                        "N": "1610612752"
+                    },
+                    "name": {
+                        "S": "Ariel Hukporti"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1630574.png"
+                    },
+                    "birthdate": {
+                        "S": "2002-04-12T00:00:00"
+                    },
+                    "height": {
+                        "S": "7-0"
+                    },
+                    "weight": {
+                        "S": "246"
+                    },
+                    "jersey": {
+                        "S": "55"
+                    },
+                    "position": {
+                        "S": "Center"
+                    },
+                    "draft_year": {
+                        "S": "2024"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "36"
+                            },
+                            "p2_0": {
+                                "N": "28"
+                            },
+                            "p3_1": {
+                                "N": "1"
+                            },
+                            "p3_0": {
+                                "N": "3"
+                            },
+                            "ft1": {
+                                "N": "26"
+                            },
+                            "ft0": {
+                                "N": "7"
+                            },
+                            "total_points": {
+                                "N": "101"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

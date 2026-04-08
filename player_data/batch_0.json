@@ -1,0 +1,1529 @@
+{
+    "Players": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1642876"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Adou Thiero"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1642876.png"
+                    },
+                    "birthdate": {
+                        "S": "2004-05-08T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-7"
+                    },
+                    "weight": {
+                        "S": "220"
+                    },
+                    "jersey": {
+                        "S": "1"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2025"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "11"
+                            },
+                            "p2_0": {
+                                "N": "12"
+                            },
+                            "p3_1": {
+                                "N": "1"
+                            },
+                            "p3_0": {
+                                "N": "2"
+                            },
+                            "ft1": {
+                                "N": "14"
+                            },
+                            "ft0": {
+                                "N": "8"
+                            },
+                            "total_points": {
+                                "N": "39"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1629020"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Jarred Vanderbilt"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629020.png"
+                    },
+                    "birthdate": {
+                        "S": "1999-04-03T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-8"
+                    },
+                    "weight": {
+                        "S": "214"
+                    },
+                    "jersey": {
+                        "S": "2"
+                    },
+                    "position": {
+                        "S": "Forward"
+                    },
+                    "draft_year": {
+                        "S": "2018"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "78"
+                            },
+                            "p2_0": {
+                                "N": "55"
+                            },
+                            "p3_1": {
+                                "N": "29"
+                            },
+                            "p3_0": {
+                                "N": "64"
+                            },
+                            "ft1": {
+                                "N": "33"
+                            },
+                            "ft0": {
+                                "N": "23"
+                            },
+                            "total_points": {
+                                "N": "276"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1642261"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Dalton Knecht"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1642261.png"
+                    },
+                    "birthdate": {
+                        "S": "2001-04-19T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-6"
+                    },
+                    "weight": {
+                        "S": "215"
+                    },
+                    "jersey": {
+                        "S": "4"
+                    },
+                    "position": {
+                        "S": "Forward"
+                    },
+                    "draft_year": {
+                        "S": "2024"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "48"
+                            },
+                            "p2_0": {
+                                "N": "29"
+                            },
+                            "p3_1": {
+                                "N": "32"
+                            },
+                            "p3_0": {
+                                "N": "72"
+                            },
+                            "ft1": {
+                                "N": "14"
+                            },
+                            "ft0": {
+                                "N": "6"
+                            },
+                            "total_points": {
+                                "N": "206"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1629028"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Deandre Ayton"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629028.png"
+                    },
+                    "birthdate": {
+                        "S": "1998-07-23T00:00:00"
+                    },
+                    "height": {
+                        "S": "7-0"
+                    },
+                    "weight": {
+                        "S": "252"
+                    },
+                    "jersey": {
+                        "S": "5"
+                    },
+                    "position": {
+                        "S": "Center"
+                    },
+                    "draft_year": {
+                        "S": "2018"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "380"
+                            },
+                            "p2_0": {
+                                "N": "188"
+                            },
+                            "p3_1": {
+                                "N": "0"
+                            },
+                            "p3_0": {
+                                "N": "0"
+                            },
+                            "ft1": {
+                                "N": "84"
+                            },
+                            "ft0": {
+                                "N": "49"
+                            },
+                            "total_points": {
+                                "N": "844"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1642355"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Bronny James"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1642355.png"
+                    },
+                    "birthdate": {
+                        "S": "2004-10-06T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-2"
+                    },
+                    "weight": {
+                        "S": "210"
+                    },
+                    "jersey": {
+                        "S": "9"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2024"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "22"
+                            },
+                            "p2_0": {
+                                "N": "30"
+                            },
+                            "p3_1": {
+                                "N": "16"
+                            },
+                            "p3_0": {
+                                "N": "31"
+                            },
+                            "ft1": {
+                                "N": "6"
+                            },
+                            "ft0": {
+                                "N": "1"
+                            },
+                            "total_points": {
+                                "N": "98"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1628379"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Luke Kennard"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1628379.png"
+                    },
+                    "birthdate": {
+                        "S": "1996-06-24T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-5"
+                    },
+                    "weight": {
+                        "S": "206"
+                    },
+                    "jersey": {
+                        "S": "10"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2017"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "109"
+                            },
+                            "p2_0": {
+                                "N": "71"
+                            },
+                            "p3_1": {
+                                "N": "114"
+                            },
+                            "p3_0": {
+                                "N": "125"
+                            },
+                            "ft1": {
+                                "N": "56"
+                            },
+                            "ft0": {
+                                "N": "5"
+                            },
+                            "total_points": {
+                                "N": "616"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1629637"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Jaxson Hayes"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629637.png"
+                    },
+                    "birthdate": {
+                        "S": "2000-05-23T00:00:00"
+                    },
+                    "height": {
+                        "S": "7-0"
+                    },
+                    "weight": {
+                        "S": "220"
+                    },
+                    "jersey": {
+                        "S": "11"
+                    },
+                    "position": {
+                        "S": "Center-Forward"
+                    },
+                    "draft_year": {
+                        "S": "2019"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "195"
+                            },
+                            "p2_0": {
+                                "N": "64"
+                            },
+                            "p3_1": {
+                                "N": "3"
+                            },
+                            "p3_0": {
+                                "N": "0"
+                            },
+                            "ft1": {
+                                "N": "98"
+                            },
+                            "ft0": {
+                                "N": "52"
+                            },
+                            "total_points": {
+                                "N": "497"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1631222"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Jake LaRavia"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1631222.png"
+                    },
+                    "birthdate": {
+                        "S": "2001-11-03T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-7"
+                    },
+                    "weight": {
+                        "S": "235"
+                    },
+                    "jersey": {
+                        "S": "12"
+                    },
+                    "position": {
+                        "S": "Forward"
+                    },
+                    "draft_year": {
+                        "S": "2022"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "158"
+                            },
+                            "p2_0": {
+                                "N": "117"
+                            },
+                            "p3_1": {
+                                "N": "74"
+                            },
+                            "p3_0": {
+                                "N": "163"
+                            },
+                            "ft1": {
+                                "N": "116"
+                            },
+                            "ft0": {
+                                "N": "36"
+                            },
+                            "total_points": {
+                                "N": "654"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1628467"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Maxi Kleber"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1628467.png"
+                    },
+                    "birthdate": {
+                        "S": "1992-01-29T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-10"
+                    },
+                    "weight": {
+                        "S": "240"
+                    },
+                    "jersey": {
+                        "S": "14"
+                    },
+                    "position": {
+                        "S": "Forward"
+                    },
+                    "draft_year": {
+                        "S": "Undrafted"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "25"
+                            },
+                            "p2_0": {
+                                "N": "17"
+                            },
+                            "p3_1": {
+                                "N": "6"
+                            },
+                            "p3_0": {
+                                "N": "19"
+                            },
+                            "ft1": {
+                                "N": "14"
+                            },
+                            "ft0": {
+                                "N": "10"
+                            },
+                            "total_points": {
+                                "N": "82"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1630559"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Austin Reaves"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1630559.png"
+                    },
+                    "birthdate": {
+                        "S": "1998-05-29T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-5"
+                    },
+                    "weight": {
+                        "S": "197"
+                    },
+                    "jersey": {
+                        "S": "15"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "Undrafted"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "255"
+                            },
+                            "p2_0": {
+                                "N": "179"
+                            },
+                            "p3_1": {
+                                "N": "118"
+                            },
+                            "p3_0": {
+                                "N": "210"
+                            },
+                            "ft1": {
+                                "N": "323"
+                            },
+                            "ft0": {
+                                "N": "48"
+                            },
+                            "total_points": {
+                                "N": "1187"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1631166"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Drew Timme"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1631166.png"
+                    },
+                    "birthdate": {
+                        "S": "2000-09-09T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-9"
+                    },
+                    "weight": {
+                        "S": "235"
+                    },
+                    "jersey": {
+                        "S": "17"
+                    },
+                    "position": {
+                        "S": "Forward"
+                    },
+                    "draft_year": {
+                        "S": "Undrafted"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "24"
+                            },
+                            "p2_0": {
+                                "N": "13"
+                            },
+                            "p3_1": {
+                                "N": "10"
+                            },
+                            "p3_0": {
+                                "N": "13"
+                            },
+                            "ft1": {
+                                "N": "5"
+                            },
+                            "ft0": {
+                                "N": "4"
+                            },
+                            "total_points": {
+                                "N": "83"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1641733"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Nick Smith Jr."
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1641733.png"
+                    },
+                    "birthdate": {
+                        "S": "2004-04-18T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-2"
+                    },
+                    "weight": {
+                        "S": "185"
+                    },
+                    "jersey": {
+                        "S": "20"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2023"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "32"
+                            },
+                            "p2_0": {
+                                "N": "36"
+                            },
+                            "p3_1": {
+                                "N": "28"
+                            },
+                            "p3_0": {
+                                "N": "44"
+                            },
+                            "ft1": {
+                                "N": "9"
+                            },
+                            "ft0": {
+                                "N": "4"
+                            },
+                            "total_points": {
+                                "N": "157"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "2544"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "LeBron James"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/2544.png"
+                    },
+                    "birthdate": {
+                        "S": "1984-12-30T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-9"
+                    },
+                    "weight": {
+                        "S": "250"
+                    },
+                    "jersey": {
+                        "S": "23"
+                    },
+                    "position": {
+                        "S": "Forward"
+                    },
+                    "draft_year": {
+                        "S": "2003"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "374"
+                            },
+                            "p2_0": {
+                                "N": "264"
+                            },
+                            "p3_1": {
+                                "N": "72"
+                            },
+                            "p3_0": {
+                                "N": "161"
+                            },
+                            "ft1": {
+                                "N": "220"
+                            },
+                            "ft0": {
+                                "N": "78"
+                            },
+                            "total_points": {
+                                "N": "1184"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1629060"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Rui Hachimura"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629060.png"
+                    },
+                    "birthdate": {
+                        "S": "1998-02-08T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-8"
+                    },
+                    "weight": {
+                        "S": "230"
+                    },
+                    "jersey": {
+                        "S": "28"
+                    },
+                    "position": {
+                        "S": "Forward"
+                    },
+                    "draft_year": {
+                        "S": "2019"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "181"
+                            },
+                            "p2_0": {
+                                "N": "134"
+                            },
+                            "p3_1": {
+                                "N": "109"
+                            },
+                            "p3_0": {
+                                "N": "141"
+                            },
+                            "ft1": {
+                                "N": "44"
+                            },
+                            "ft0": {
+                                "N": "19"
+                            },
+                            "total_points": {
+                                "N": "733"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1643024"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Chris Ma\u00f1on"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1643024.png"
+                    },
+                    "birthdate": {
+                        "S": "2001-12-09T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-4"
+                    },
+                    "weight": {
+                        "S": "209"
+                    },
+                    "jersey": {
+                        "S": "30"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "Undrafted"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "1"
+                            },
+                            "p2_0": {
+                                "N": "1"
+                            },
+                            "p3_1": {
+                                "N": "0"
+                            },
+                            "p3_0": {
+                                "N": "2"
+                            },
+                            "ft1": {
+                                "N": "2"
+                            },
+                            "ft0": {
+                                "N": "0"
+                            },
+                            "total_points": {
+                                "N": "4"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "203935"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Marcus Smart"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/203935.png"
+                    },
+                    "birthdate": {
+                        "S": "1994-03-06T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-3"
+                    },
+                    "weight": {
+                        "S": "220"
+                    },
+                    "jersey": {
+                        "S": "36"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2014"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "89"
+                            },
+                            "p2_0": {
+                                "N": "89"
+                            },
+                            "p3_1": {
+                                "N": "96"
+                            },
+                            "p3_0": {
+                                "N": "190"
+                            },
+                            "ft1": {
+                                "N": "102"
+                            },
+                            "ft0": {
+                                "N": "23"
+                            },
+                            "total_points": {
+                                "N": "568"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1641723"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Kobe Bufkin"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1641723.png"
+                    },
+                    "birthdate": {
+                        "S": "2003-09-21T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-4"
+                    },
+                    "weight": {
+                        "S": "195"
+                    },
+                    "jersey": {
+                        "S": "44"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2023"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "9"
+                            },
+                            "p2_0": {
+                                "N": "14"
+                            },
+                            "p3_1": {
+                                "N": "5"
+                            },
+                            "p3_0": {
+                                "N": "20"
+                            },
+                            "ft1": {
+                                "N": "11"
+                            },
+                            "ft0": {
+                                "N": "1"
+                            },
+                            "total_points": {
+                                "N": "44"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1629029"
+                    },
+                    "team_id": {
+                        "N": "1610612747"
+                    },
+                    "name": {
+                        "S": "Luka Don\u010di\u0107"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629029.png"
+                    },
+                    "birthdate": {
+                        "S": "1999-02-28T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-8"
+                    },
+                    "weight": {
+                        "S": "230"
+                    },
+                    "jersey": {
+                        "S": "77"
+                    },
+                    "position": {
+                        "S": "Forward-Guard"
+                    },
+                    "draft_year": {
+                        "S": "2018"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "439"
+                            },
+                            "p2_0": {
+                                "N": "324"
+                            },
+                            "p3_1": {
+                                "N": "254"
+                            },
+                            "p3_0": {
+                                "N": "440"
+                            },
+                            "ft1": {
+                                "N": "503"
+                            },
+                            "ft0": {
+                                "N": "142"
+                            },
+                            "total_points": {
+                                "N": "2143"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1628369"
+                    },
+                    "team_id": {
+                        "N": "1610612738"
+                    },
+                    "name": {
+                        "S": "Jayson Tatum"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1628369.png"
+                    },
+                    "birthdate": {
+                        "S": "1998-03-03T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-8"
+                    },
+                    "weight": {
+                        "S": "210"
+                    },
+                    "jersey": {
+                        "S": "0"
+                    },
+                    "position": {
+                        "S": "Forward-Guard"
+                    },
+                    "draft_year": {
+                        "S": "2017"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "66"
+                            },
+                            "p2_0": {
+                                "N": "66"
+                            },
+                            "p3_1": {
+                                "N": "45"
+                            },
+                            "p3_0": {
+                                "N": "88"
+                            },
+                            "ft1": {
+                                "N": "57"
+                            },
+                            "ft0": {
+                                "N": "12"
+                            },
+                            "total_points": {
+                                "N": "324"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "202696"
+                    },
+                    "team_id": {
+                        "N": "1610612738"
+                    },
+                    "name": {
+                        "S": "Nikola Vu\u010devi\u0107"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/202696.png"
+                    },
+                    "birthdate": {
+                        "S": "1990-10-24T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-9"
+                    },
+                    "weight": {
+                        "S": "265"
+                    },
+                    "jersey": {
+                        "S": "4"
+                    },
+                    "position": {
+                        "S": "Center"
+                    },
+                    "draft_year": {
+                        "S": "2011"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "290"
+                            },
+                            "p2_0": {
+                                "N": "233"
+                            },
+                            "p3_1": {
+                                "N": "95"
+                            },
+                            "p3_0": {
+                                "N": "167"
+                            },
+                            "ft1": {
+                                "N": "76"
+                            },
+                            "ft0": {
+                                "N": "15"
+                            },
+                            "total_points": {
+                                "N": "941"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1627759"
+                    },
+                    "team_id": {
+                        "N": "1610612738"
+                    },
+                    "name": {
+                        "S": "Jaylen Brown"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1627759.png"
+                    },
+                    "birthdate": {
+                        "S": "1996-10-24T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-6"
+                    },
+                    "weight": {
+                        "S": "223"
+                    },
+                    "jersey": {
+                        "S": "7"
+                    },
+                    "position": {
+                        "S": "Guard-Forward"
+                    },
+                    "draft_year": {
+                        "S": "2016"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "590"
+                            },
+                            "p2_0": {
+                                "N": "539"
+                            },
+                            "p3_1": {
+                                "N": "138"
+                            },
+                            "p3_0": {
+                                "N": "263"
+                            },
+                            "ft1": {
+                                "N": "421"
+                            },
+                            "ft0": {
+                                "N": "108"
+                            },
+                            "total_points": {
+                                "N": "2015"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1642910"
+                    },
+                    "team_id": {
+                        "N": "1610612738"
+                    },
+                    "name": {
+                        "S": "John Tonje"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1642910.png"
+                    },
+                    "birthdate": {
+                        "S": "2001-04-23T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-4"
+                    },
+                    "weight": {
+                        "S": "218"
+                    },
+                    "jersey": {
+                        "S": "8"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2025"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "0"
+                            },
+                            "p2_0": {
+                                "N": "0"
+                            },
+                            "p3_1": {
+                                "N": "0"
+                            },
+                            "p3_0": {
+                                "N": "2"
+                            },
+                            "ft1": {
+                                "N": "2"
+                            },
+                            "ft0": {
+                                "N": "0"
+                            },
+                            "total_points": {
+                                "N": "2"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1628401"
+                    },
+                    "team_id": {
+                        "N": "1610612738"
+                    },
+                    "name": {
+                        "S": "Derrick White"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1628401.png"
+                    },
+                    "birthdate": {
+                        "S": "1994-07-02T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-4"
+                    },
+                    "weight": {
+                        "S": "190"
+                    },
+                    "jersey": {
+                        "S": "9"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2017"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "226"
+                            },
+                            "p2_0": {
+                                "N": "238"
+                            },
+                            "p3_1": {
+                                "N": "206"
+                            },
+                            "p3_0": {
+                                "N": "419"
+                            },
+                            "ft1": {
+                                "N": "180"
+                            },
+                            "ft0": {
+                                "N": "20"
+                            },
+                            "total_points": {
+                                "N": "1250"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1630202"
+                    },
+                    "team_id": {
+                        "N": "1610612738"
+                    },
+                    "name": {
+                        "S": "Payton Pritchard"
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1630202.png"
+                    },
+                    "birthdate": {
+                        "S": "1998-01-28T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-1"
+                    },
+                    "weight": {
+                        "S": "195"
+                    },
+                    "jersey": {
+                        "S": "11"
+                    },
+                    "position": {
+                        "S": "Guard"
+                    },
+                    "draft_year": {
+                        "S": "2020"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "285"
+                            },
+                            "p2_0": {
+                                "N": "227"
+                            },
+                            "p3_1": {
+                                "N": "204"
+                            },
+                            "p3_0": {
+                                "N": "341"
+                            },
+                            "ft1": {
+                                "N": "119"
+                            },
+                            "ft0": {
+                                "N": "15"
+                            },
+                            "total_points": {
+                                "N": "1301"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "player_id": {
+                        "N": "1631199"
+                    },
+                    "team_id": {
+                        "N": "1610612738"
+                    },
+                    "name": {
+                        "S": "Ron Harper Jr."
+                    },
+                    "headshot_url": {
+                        "S": "https://cdn.nba.com/headshots/nba/latest/1040x760/1631199.png"
+                    },
+                    "birthdate": {
+                        "S": "2000-04-12T00:00:00"
+                    },
+                    "height": {
+                        "S": "6-5"
+                    },
+                    "weight": {
+                        "S": "233"
+                    },
+                    "jersey": {
+                        "S": "13"
+                    },
+                    "position": {
+                        "S": "Guard-Forward"
+                    },
+                    "draft_year": {
+                        "S": "Undrafted"
+                    },
+                    "stats": {
+                        "M": {
+                            "p2_1": {
+                                "N": "11"
+                            },
+                            "p2_0": {
+                                "N": "8"
+                            },
+                            "p3_1": {
+                                "N": "22"
+                            },
+                            "p3_0": {
+                                "N": "42"
+                            },
+                            "ft1": {
+                                "N": "1"
+                            },
+                            "ft0": {
+                                "N": "1"
+                            },
+                            "total_points": {
+                                "N": "89"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

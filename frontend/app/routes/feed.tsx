@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate, Link, Form } from 'react-router';
+import { useNavigate, Link, Form, useLoaderData } from 'react-router';
+import type { LoaderFunctionArgs } from 'react-router';
+import { getSession } from '~/services/session.server';
 import UploadModal from '../components/UploadModal';
 import './FeedPage.css';
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get('Cookie'));
+  const user = session.get('user');
+  const groups = user?.groups ?? [];
+  const isAdmin = groups.includes('admin');
+  const isCoach = groups.includes('coaches');
+  return { isAdmin, isCoach };
+}
 
 type TabId = 'forYou' | 'following';
 
@@ -417,6 +428,7 @@ function FeedCard({ item }: { item: FeedItem }) {
 }
 
 const FeedPage: React.FC = () => {
+  const { isAdmin, isCoach } = useLoaderData<typeof loader>();
   const [activeTab, setActiveTab] = useState<TabId>('forYou');
   const [forYouItems, setForYouItems] = useState<FeedItem[]>([]);
   const [followingItems, setFollowingItems] = useState<FeedItem[]>([]);
@@ -524,7 +536,13 @@ const FeedPage: React.FC = () => {
       </header>
 
       <aside className="feedSidebar">
-        <Link to="/compare" className="feedSidebarBtn">Compare Players</Link>
+        {isAdmin && (
+          <Link to="/manage-coaches" className="feedSidebarBtn">Manage Coaches</Link>
+        )}
+        {isCoach && (
+          <Link to="/manage-players" className="feedSidebarBtn">Manage Players</Link>
+        )}
+        <Link to="/compare" className="feedSidebarBtn">Compare</Link>
         <Link to="/insights" className="feedSidebarBtn">Team Insights</Link>
       </aside>
 

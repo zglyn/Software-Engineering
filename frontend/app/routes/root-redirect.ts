@@ -10,7 +10,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const groups = user.groups ?? [];
 
-  if (groups.length === 0 || (groups.length === 1 && groups[0] === "public")) {
+  if (groups.includes("admin") || groups.includes("coaches") || groups.length === 0 || (groups.length === 1 && groups[0] === "public")) {
     throw redirect("/feed");
   }
 

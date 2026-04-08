@@ -1,56 +1,81 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, redirect, useLoaderData } from 'react-router';
+import type { LoaderFunctionArgs } from 'react-router';
+import { getSession } from '~/services/session.server';
 import './ManagePlayersPage.css';
 
 interface Player {
-  id: string;
+  player_id: number;
   name: string;
-  position: string;
-  number: string;
+  position?: string;
+  jersey?: string;
+  height?: string;
+  weight?: string;
+  draft_year?: string;
+  birthdate?: string;
+  headshot_url?: string;
 }
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get('Cookie'));
+  const user = session.get('user');
+  if (!user || !(user.groups ?? []).includes('coaches')) {
+    throw redirect('/feed');
+  }
+
+  const base = process.env.BACKEND_URL;
+  let players: Player[] = [];
+  let teamId: number | null = null;
+
+  try {
+    const res = await fetch(`${base}/api/players/by-coach?coachId=${user.id}`);
+    if (res.ok) {
+      const data = await res.json() as { players: Player[]; teamId: number };
+      players = data.players ?? [];
+      teamId = data.teamId ?? null;
+    }
+  } catch {
+    players = [];
+  }
+
+  return { players, teamId };
+}
+
+const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C', 'G', 'F', 'F/C'];
+
 const ManagePlayersPage: React.FC = () => {
-  const [players, setPlayers] = useState<Player[]>([
-    { id: 'p1', name: 'LeBron James', position: 'F', number: '23' },
-    { id: 'p2', name: 'Anthony Davis', position: 'F/C', number: '3' },
-    { id: 'p3', name: 'Austin Reaves', position: 'G', number: '15' }
-  ]);
-  
-  const [newPlayerName, setNewPlayerName] = useState('');
-  const [newPlayerPos, setNewPlayerPos] = useState('');
-  const [newPlayerNum, setNewPlayerNum] = useState('');
+  const { players: loadedPlayers } = useLoaderData<typeof loader>();
+  const [players, setPlayers] = useState<Player[]>(loadedPlayers);
+  const [newName, setNewName] = useState('');
+  const [newPos, setNewPos] = useState('');
+  const [newJersey, setNewJersey] = useState('');
+
+  useEffect(() => {
+    setPlayers(loadedPlayers);
+  }, [loadedPlayers]);
 
   const handleAddPlayer = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newPlayerName.trim() || !newPlayerPos || !newPlayerNum.trim()) return;
-
+    if (!newName.trim() || !newPos || !newJersey.trim()) return;
     const newPlayer: Player = {
-      id: `p-${Date.now()}`,
-      name: newPlayerName,
-      position: newPlayerPos,
-      number: newPlayerNum
+      player_id: Date.now(),
+      name: newName.trim(),
+      position: newPos,
+      jersey: newJersey.trim(),
     };
-
-    setPlayers([...players, newPlayer]);
-    setNewPlayerName('');
-    setNewPlayerPos('');
-    setNewPlayerNum('');
-  };
-
-  const handleRemovePlayer = (id: string) => {
-    setPlayers(players.filter(player => player.id !== id));
+    setPlayers(prev => [...prev, newPlayer]);
+    setNewName('');
+    setNewPos('');
+    setNewJersey('');
   };
 
   return (
     <div className="managePlayersWrapper">
       <header className="managePlayersHeader">
         <Link to="/feed" className="managePlayersBackBtn">← Feed</Link>
-        <h1 className="managePlayersTitle">Coach Dashboard: Roster</h1>
       </header>
 
       <div className="managePlayersContainer">
-        
-        {/* Add Player Section */}
         <div className="managePlayersCard">
           <h2 className="managePlayersCardTitle">Add New Player</h2>
           <form className="managePlayersForm" onSubmit={handleAddPlayer}>
@@ -60,78 +85,90 @@ const ManagePlayersPage: React.FC = () => {
                 type="text"
                 className="managePlayersInput"
                 placeholder="e.g. D'Angelo Russell"
-                value={newPlayerName}
-                onChange={e => setNewPlayerName(e.target.value)}
+                value={newName}
+                onChange={e => setNewName(e.target.value)}
               />
             </div>
             <div className="managePlayersInputGroup">
               <label className="managePlayersLabel">Position</label>
-              <select 
-                className="managePlayersSelect" 
-                value={newPlayerPos} 
-                onChange={e => setNewPlayerPos(e.target.value)}
+              <select
+                className="managePlayersSelect"
+                value={newPos}
+                onChange={e => setNewPos(e.target.value)}
               >
                 <option value="">Select...</option>
-                <option value="PG">PG</option>
-                <option value="SG">SG</option>
-                <option value="SF">SF</option>
-                <option value="PF">PF</option>
-                <option value="C">C</option>
-                <option value="G">G</option>
-                <option value="F">F</option>
-                <option value="F/C">F/C</option>
+                {POSITIONS.map(p => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
             <div className="managePlayersInputGroup" style={{ maxWidth: '80px' }}>
-              <label className="managePlayersLabel">Number</label>
+              <label className="managePlayersLabel">Jersey</label>
               <input
                 type="number"
                 className="managePlayersInput"
                 placeholder="00"
-                value={newPlayerNum}
-                onChange={e => setNewPlayerNum(e.target.value)}
+                value={newJersey}
+                onChange={e => setNewJersey(e.target.value)}
               />
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="managePlayersBtnPrimary"
-              disabled={!newPlayerName.trim() || !newPlayerPos || !newPlayerNum.trim()}
+              disabled={!newName.trim() || !newPos || !newJersey.trim()}
             >
               Add
             </button>
           </form>
         </div>
 
-        {/* Existing Roster Section */}
         <div className="managePlayersCard">
           <h2 className="managePlayersCardTitle">Current Roster</h2>
           {players.length === 0 ? (
-            <p style={{ color: '#9ca3af', fontSize: '0.9rem' }}>No players on roster.</p>
+            <p style={{ color: '#9ca3af', fontSize: '0.9rem' }}>No players found for your team.</p>
           ) : (
-            <ul className="managePlayersList">
+            <div className="managePlayersGrid">
               {players.map(player => (
-                <li key={player.id} className="managePlayersListItem">
-                  <div className="managePlayersInfo">
-                    <div className="managePlayersNumberBadge">
-                      {player.number}
-                    </div>
-                    <div className="managePlayersDetails">
+                <div key={player.player_id} className="managePlayersGridItem">
+                  <div className="managePlayersCardTop">
+                    {player.headshot_url && (
+                      <img
+                        src={player.headshot_url}
+                        alt={player.name}
+                        className="managePlayersHeadshot"
+                      />
+                    )}
+                    <div className="managePlayersCardIdentity">
                       <span className="managePlayersName">{player.name}</span>
-                      <span className="managePlayersPos">{player.position}</span>
+                      <div className="managePlayersCardMeta">
+                        <div className="managePlayersNumberBadge">#{player.jersey ?? '—'}</div>
+                        <span className="managePlayersPos">{player.position ?? '—'}</span>
+                      </div>
                     </div>
                   </div>
-                  <button 
-                    className="managePlayersBtnDanger"
-                    onClick={() => handleRemovePlayer(player.id)}
-                  >
-                    Remove
-                  </button>
-                </li>
+                  <div className="managePlayersCardStats">
+                    <div className="managePlayersStatItem">
+                      <span className="managePlayersStatLabel">Height</span>
+                      <span className="managePlayersStatValue">{player.height ?? '—'}</span>
+                    </div>
+                    <div className="managePlayersStatItem">
+                      <span className="managePlayersStatLabel">Weight</span>
+                      <span className="managePlayersStatValue">{player.weight ? `${player.weight} lbs` : '—'}</span>
+                    </div>
+                    <div className="managePlayersStatItem">
+                      <span className="managePlayersStatLabel">Draft</span>
+                      <span className="managePlayersStatValue">{player.draft_year ?? '—'}</span>
+                    </div>
+                    <div className="managePlayersStatItem">
+                      <span className="managePlayersStatLabel">Born</span>
+                      <span className="managePlayersStatValue">
+                        {player.birthdate ? player.birthdate.substring(0, 10) : '—'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
-
       </div>
     </div>
   );

@@ -172,3 +172,79 @@
 .manageCoachesBtnDanger:hover {
   background: rgba(244, 63, 94, 0.1);
 }
+
+.manageCoachesTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.manageCoachesTableTh {
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 12px;
+  border-bottom: 1px solid #2d2d33;
+}
+
+.manageCoachesTableRow:not(:last-child) td {
+  border-bottom: 1px solid #2d2d33;
+}
+
+.manageCoachesTableTd {
+  padding: 12px 12px;
+  font-size: 0.95rem;
+  color: #f4f4f5;
+}
+
+.manageCoachesTableTdAction {
+  text-align: right;
+  width: 1%;
+  white-space: nowrap;
+}
+
+.manageCoachesDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #1e1e24;
+  border: 1px solid #3d3d45;
+  border-radius: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  z-index: 100;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.manageCoachesDropdownItem {
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: #f4f4f5;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.manageCoachesDropdownItem:hover {
+  background: #2d2d35;
+}
+
+.manageCoachesDropdownEmpty {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #1e1e24;
+  border: 1px solid #3d3d45;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: #9ca3af;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
