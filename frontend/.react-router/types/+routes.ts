@@ -41,6 +41,12 @@ type Pages = {
   "/management": {
     params: {};
   };
+  "/manage-coaches": {
+    params: {};
+  };
+  "/manage-players": {
+    params: {};
+  };
   "/compare": {
     params: {};
   };
@@ -87,7 +93,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/auth/callback" | "/auth/logout" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/management" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile" | "/*";
+    page: "/" | "/login" | "/auth/callback" | "/auth/logout" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile" | "/*";
   };
   "routes/login/index.tsx": {
     id: "routes/login/index";
@@ -103,7 +109,7 @@ type RouteFiles = {
   };
   "layouts/protected-layout.tsx": {
     id: "layouts/protected-layout";
-    page: "/" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/management" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile";
+    page: "/" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile";
   };
   "routes/root-redirect.ts": {
     id: "routes/root-redirect";
@@ -132,6 +138,14 @@ type RouteFiles = {
   "routes/management.tsx": {
     id: "routes/management";
     page: "/management";
+  };
+  "routes/ManageCoachesPage.tsx": {
+    id: "routes/ManageCoachesPage";
+    page: "/manage-coaches";
+  };
+  "routes/ManagePlayersPage.tsx": {
+    id: "routes/ManagePlayersPage";
+    page: "/manage-players";
   };
   "routes/compare.tsx": {
     id: "routes/compare";
@@ -192,6 +206,8 @@ type RouteModules = {
   "routes/players": typeof import("./app/routes/players.tsx");
   "routes/stats": typeof import("./app/routes/stats.tsx");
   "routes/management": typeof import("./app/routes/management.tsx");
+  "routes/ManageCoachesPage": typeof import("./app/routes/ManageCoachesPage.tsx");
+  "routes/ManagePlayersPage": typeof import("./app/routes/ManagePlayersPage.tsx");
   "routes/compare": typeof import("./app/routes/compare.tsx");
   "routes/compare-stats-only": typeof import("./app/routes/compare-stats-only.tsx");
   "routes/compare-money": typeof import("./app/routes/compare-money.tsx");

@@ -38,9 +38,9 @@
 
 .managePlayersContainer {
   width: 100%;
-  max-width: 720px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 32px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -129,54 +129,126 @@
   cursor: not-allowed;
 }
 
-.managePlayersList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.managePlayersGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
-.managePlayersListItem {
+@media (max-width: 900px) {
+  .managePlayersGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .managePlayersGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.managePlayersGridItem {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 14px;
   background: #27272a;
-  padding: 12px 16px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 12px;
   border: 1px solid #3d3d45;
+}
+
+.managePlayersCardTop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.managePlayersHeadshot {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  flex-shrink: 0;
+  background: #3d3d45;
+}
+
+.managePlayersCardIdentity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.managePlayersCardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.managePlayersCardStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid #3d3d45;
+  padding-top: 14px;
+}
+
+.managePlayersStatItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.managePlayersStatLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.managePlayersStatValue {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e4e4e7;
 }
 
 .managePlayersInfo {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .managePlayersNumberBadge {
+  display: inline-block;
   background: #6366f1;
   color: white;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
+  padding: 2px 10px;
+  border-radius: 20px;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  width: fit-content;
 }
 
 .managePlayersDetails {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  margin-top: 4px;
 }
 
 .managePlayersName {
   font-size: 1rem;
   font-weight: 600;
   color: #f4f4f5;
+  text-align: center;
+  width: 100%;
 }
 
 .managePlayersPos {

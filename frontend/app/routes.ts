@@ -17,6 +17,8 @@ export default [
     route("players", "routes/players.tsx"),
     route("stats", "routes/stats.tsx"),
     route("management", "routes/management.tsx"),
+    route("manage-coaches", "routes/ManageCoachesPage.tsx"),
+    route("manage-players", "routes/ManagePlayersPage.tsx"),
     route("compare", "routes/compare.tsx"),
     route("compare-stats-only", "routes/compare-stats-only.tsx"),
     route("compare-money", "routes/compare-money.tsx"),
