@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate, Link, Form, useLoaderData } from 'react-router';
+import { useNavigate, Link, Form, redirect, useLoaderData } from 'react-router';
 import type { LoaderFunctionArgs } from 'react-router';
 import { getSession } from '~/services/session.server';
 import UploadModal from '../components/UploadModal';
@@ -8,10 +8,15 @@ import './FeedPage.css';
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
   const user = session.get('user');
+  if (!user) throw redirect('/login');
   const groups = user?.groups ?? [];
   const isAdmin = groups.includes('admin');
   const isCoach = groups.includes('coaches');
-  return { isAdmin, isCoach };
+  const userId =
+    (typeof user?.id === 'string' && user.id.trim() ? user.id.trim() : null) ??
+    (typeof user?.email === 'string' && user.email.trim() ? user.email.trim() : null);
+  const backendBaseUrl = process.env.BACKEND_URL || 'http://localhost:3001';
+  return { isAdmin, isCoach, userId, backendBaseUrl };
 }
 
 type TabId = 'forYou' | 'following';
@@ -428,7 +433,7 @@ function FeedCard({ item }: { item: FeedItem }) {
 }
 
 const FeedPage: React.FC = () => {
-  const { isAdmin, isCoach } = useLoaderData<typeof loader>();
+  const { isAdmin, isCoach, userId, backendBaseUrl } = useLoaderData<typeof loader>();
   const [activeTab, setActiveTab] = useState<TabId>('forYou');
   const [forYouItems, setForYouItems] = useState<FeedItem[]>([]);
   const [followingItems, setFollowingItems] = useState<FeedItem[]>([]);
@@ -582,7 +587,9 @@ const FeedPage: React.FC = () => {
       <UploadModal
         open={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}
-        onUploadComplete={(id) => navigate(`/video/${id}`)}
+        onUploadComplete={() => {}}
+        userId={userId}
+        backendBaseUrl={backendBaseUrl}
       />
     </div>
   );

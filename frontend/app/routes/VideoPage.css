@@ -63,6 +63,17 @@
   line-height: 1.45;
 }
 
+.videoPageNoStats {
+  margin: 0 0 20px;
+  padding: 16px 18px;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 10px;
+  color: #c4b5fd;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
 .videoPageMessage {
   margin: 0 0 16px;
   color: #9ca3af;

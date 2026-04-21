@@ -19,7 +19,9 @@
     "aws-jwt-verify": "^5.1.1",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "@supabase/supabase-js": "^2.49.1",
+    "multer": "^2.0.0"
   },
   "devDependencies": {
     "jest": "^30.3.0",
