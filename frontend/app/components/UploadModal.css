@@ -62,12 +62,14 @@
 }
 
 .uploadDropZone {
+  position: relative;
   border: 2px dashed #3d3d45;
   border-radius: 10px;
   padding: 28px 16px;
   text-align: center;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
+  overflow: hidden;
 }
 
 .uploadDropZone:hover {
@@ -106,6 +108,12 @@
   font-size: 0.85rem;
   font-weight: 500;
   color: #d1d5db;
+}
+
+.uploadTitleHint {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #6b6b72;
 }
 
 .uploadInput,

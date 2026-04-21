@@ -27,5 +27,5 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function ProtectedLayout() {
   const { user } = useLoaderData<typeof loader>();
-  return <Outlet />;
+  return <Outlet context={{ user }} />;
 }
