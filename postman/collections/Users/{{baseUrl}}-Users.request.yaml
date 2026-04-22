@@ -1,6 +1,6 @@
 $kind: http-request
 name: "{{baseUrl}}/Users"
-url: htpp://localhost:5000/api/teams
+url: http://localhost:5000/api/teams
 method: POST
 body:
   type: json
