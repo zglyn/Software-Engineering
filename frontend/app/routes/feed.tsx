@@ -553,28 +553,28 @@ const FeedPage: React.FC = () => {
 
       <div className="feedLayout">
         <div className="feedPage">
-      <div className="feedTabs">
-        <button
-          className={`feedTab ${activeTab === 'forYou' ? 'feedTabActive' : ''}`}
-          onClick={() => setActiveTab('forYou')}
-        >
-          For You
-        </button>
-        <button
-          className={`feedTab ${activeTab === 'following' ? 'feedTabActive' : ''}`}
-          onClick={() => setActiveTab('following')}
-        >
-          Following
-        </button>
-      </div>
+          <div className="feedTabs">
+            <button
+              className={`feedTab ${activeTab === 'forYou' ? 'feedTabActive' : ''}`}
+              onClick={() => setActiveTab('forYou')}
+            >
+              For You
+            </button>
+            <button
+              className={`feedTab ${activeTab === 'following' ? 'feedTabActive' : ''}`}
+              onClick={() => setActiveTab('following')}
+            >
+              Following
+            </button>
+          </div>
 
-      <main className="feedList">
-        {items.map((item, index) => (
-          <FeedCard key={`${activeTab}-${index}`} item={item} />
-        ))}
-        <div ref={sentinelRef} className="feedSentinel" />
-        {loading && <div className="feedLoader">Loading...</div>}
-      </main>
+          <main className="feedList">
+            {items.map((item, index) => (
+              <FeedCard key={`${activeTab}-${index}`} item={item} />
+            ))}
+            <div ref={sentinelRef} className="feedSentinel" />
+            {loading && <div className="feedLoader">Loading...</div>}
+          </main>
         </div>
       </div>
       <button
@@ -587,7 +587,7 @@ const FeedPage: React.FC = () => {
       <UploadModal
         open={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}
-        onUploadComplete={() => {}}
+        onUploadComplete={() => navigate('/uploads')}
         userId={userId}
         backendBaseUrl={backendBaseUrl}
       />
