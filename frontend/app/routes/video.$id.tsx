@@ -62,7 +62,15 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const j = (await res.json()) as { signedUrl?: string; name?: string };
   if (!j.signedUrl) return { mode: 'context' as const, id };
   let statsGenerated = false;
-  let stats: { ft_0: number; ft_1: number; p2_0: number; p2_1: number; p3_0: number; p3_1: number; total_points: number } | null = null;
+  let stats: { ft_0: number; ft_1: number; p2_0: number; p2_1: number; p3_0: number; p3_1: number; total_points: number } = {
+    ft_0: 0,
+    ft_1: 0,
+    p2_0: 0,
+    p2_1: 0,
+    p3_0: 0,
+    p3_1: 0,
+    total_points: 0,
+  };
   try {
     const metaRes = await fetch(
       `${base}/api/videos/by-object-path?userId=${encodeURIComponent(user.id)}&path=${encodeURIComponent(objectPath)}`
@@ -82,7 +90,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     }
   } catch {
     statsGenerated = false;
-    stats = null;
   }
   return {
     mode: 'storage' as const,
@@ -131,13 +138,12 @@ export default function VideoPage() {
           <div className="videoThumbWrap">
             <video className="videoThumbImg" src={loaderData.signedUrl} controls playsInline />
           </div>
-          {!loaderData.statsGenerated && (
-            <p className="videoPageNoStats">Stats not yet generated, please check again soon!</p>
-          )}
-          {loaderData.statsGenerated && loaderData.stats && (
-            <div className="videoStats">
-              <section className="videoStatSection">
-                <h2 className="videoStatSectionTitle">Shooting stats</h2>
+          <div className="videoStats">
+            <section className="videoStatSection">
+              <h2 className="videoStatSectionTitle">Shooting stats</h2>
+              {!loaderData.statsGenerated ? (
+                <p className="videoPageNoStats">Stats not yet generated, please try again in a few minutes!</p>
+              ) : (
                 <div className="videoDefensiveGrid">
                   <div className="videoDefensiveCard">
                     <span className="videoDefensiveLabel">FT</span>
@@ -156,9 +162,9 @@ export default function VideoPage() {
                     <span className="videoDefensiveValue">{loaderData.stats.total_points}</span>
                   </div>
                 </div>
-              </section>
-            </div>
-          )}
+              )}
+            </section>
+          </div>
         </div>
       </div>
     );

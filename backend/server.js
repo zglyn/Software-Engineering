@@ -441,6 +441,59 @@ app.get('/api/videos/by-object-path', async (req, res) => {
     }
 });
 
+app.delete('/api/uploads/video', async (req, res) => {
+    try {
+        const userId = req.query.userId;
+        let objectPath = req.query.path;
+        if (typeof objectPath !== 'string') objectPath = '';
+        try {
+            objectPath = decodeURIComponent(objectPath);
+        } catch {
+            objectPath = '';
+        }
+        if (userId == null || typeof userId !== 'string' || !String(userId).trim()) {
+            res.status(400).json({ error: 'userId required' });
+            return;
+        }
+        if (!objectPath || objectPath.includes('..') || objectPath.startsWith('/')) {
+            res.status(400).json({ error: 'path required' });
+            return;
+        }
+        const uid = String(userId).trim();
+        const uidSeg = storageUserSegment(uid);
+        if (!objectPath.startsWith(`${uidSeg}/`)) {
+            res.status(403).json({ error: 'forbidden' });
+            return;
+        }
+        const supabase = getSupabaseAdmin();
+        if (!supabase) {
+            res.status(503).json({ error: 'Supabase not configured' });
+            return;
+        }
+        const bucket = process.env.SUPABASE_STORAGE_BUCKET || 'swe-videos';
+        const fileName = objectPath.split('/').pop() || '';
+        const video_id = buildVideoRowId(uid, fileName);
+        const { error: storageErr } = await supabase.storage.from(bucket).remove([objectPath]);
+        if (storageErr) {
+            console.error('delete storage:', storageErr);
+            res.status(500).json({ error: 'delete failed' });
+            return;
+        }
+        try {
+            await docClient.send(new DeleteCommand({
+                TableName: VIDEOS_TABLE,
+                Key: { video_id },
+            }));
+        } catch (dbErr) {
+            console.error('delete dynamo:', dbErr);
+        }
+        res.status(200).json({ ok: true });
+    } catch (err) {
+        console.error('uploads/video delete:', err);
+        res.status(500).json({ error: 'delete failed' });
+    }
+});
+
 app.get('/api/teams', async (req, res) => {
     try {
         const command = new ScanCommand({ TableName: 'Teams' });
