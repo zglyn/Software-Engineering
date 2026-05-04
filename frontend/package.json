@@ -22,6 +22,7 @@
     "remix-auth-oauth2": "^3.4.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@react-router/dev": "latest",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",

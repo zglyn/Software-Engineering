@@ -29,10 +29,12 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const intent = formData.get('intent');
 
+  // Note writing func
   if (intent === 'write_note') {
     const receiverId = formData.get('receiverId') as string;
     const noteText = formData.get('noteText') as string;
 
+    // Sends notes to dynamodb table 
     try {
       await dynamo.send(new PutCommand({
         TableName: "Notes",

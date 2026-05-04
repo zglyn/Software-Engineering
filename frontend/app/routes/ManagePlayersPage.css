@@ -271,3 +271,101 @@
 .managePlayersBtnDanger:hover {
   background: rgba(244, 63, 94, 0.1);
 }
+
+/* New button styles for notes */ 
+
+.managePlayersNameRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.managePlayersNoteBtn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0 4px;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.managePlayersNoteBtn:hover {
+  color: #6366f1;
+}
+
+.managePlayersModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.managePlayersModal {
+  background: #1e1e24;
+  border: 1px solid #2d2d33;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.managePlayersModalTitle {
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+  color: #f4f4f5;
+  font-weight: 600;
+}
+
+.managePlayersTextarea {
+  width: 100%;
+  height: 120px;
+  background: #0f0f12;
+  border: 1px solid #2d2d35;
+  border-radius: 8px;
+  padding: 12px;
+  color: #f4f4f5;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  margin-bottom: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.managePlayersTextarea:focus {
+  border-color: #6366f1;
+}
+
+.managePlayersModalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.managePlayersBtnCancel {
+  background: transparent;
+  color: #a1a1aa;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.managePlayersBtnCancel:hover {
+  color: #f4f4f5;
+  background: rgba(255, 255, 255, 0.05);
+}
