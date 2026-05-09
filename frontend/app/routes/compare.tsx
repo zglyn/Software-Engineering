@@ -1,8 +1,81 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link, useLoaderData } from 'react-router';
 import type { LoaderFunctionArgs } from 'react-router';
-import { TEAMS_BY_ID } from '../data/mockStats';
+import { getSession } from '~/services/session.server';
 import './ComparePage.css';
+
+interface TeamMetric {
+  label: string;
+  value: string;
+}
+
+interface CompareTeam {
+  id: string;
+  name: string;
+  stats: Record<string, unknown>;
+}
+
+type ApiTeamRow = {
+  team_id?: number | string;
+  name?: string;
+  team?: {
+    name?: string;
+    metrics?: TeamMetric[];
+    advancedMetrics?: TeamMetric[];
+  };
+  stats?: unknown;
+};
+
+function decodeDynamoValue(v: unknown): unknown {
+  if (!v || typeof v !== 'object') return v;
+  const obj = v as Record<string, unknown>;
+  if (typeof obj.S === 'string') return obj.S;
+  if (typeof obj.N === 'string') return Number(obj.N);
+  if (obj.NULL === true) return null;
+  if (Array.isArray(obj.L)) return obj.L.map(decodeDynamoValue);
+  if (obj.M && typeof obj.M === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [k, vv] of Object.entries(obj.M as Record<string, unknown>)) out[k] = decodeDynamoValue(vv);
+    return out;
+  }
+  return v;
+}
+
+function normalizeTeamStats(raw: unknown): Record<string, unknown> {
+  if (!raw) return {};
+  if (typeof raw === 'string') {
+    try {
+      return normalizeTeamStats(JSON.parse(raw));
+    } catch {
+      return {};
+    }
+  }
+  if (typeof raw === 'object' && raw != null) {
+    const obj = raw as Record<string, unknown>;
+    if (obj.M) {
+      const decoded = decodeDynamoValue(raw);
+      if (decoded && typeof decoded === 'object') return decoded as Record<string, unknown>;
+    }
+    return obj;
+  }
+  return {};
+}
+
+function mapApiTeamToCompareTeam(raw: ApiTeamRow): CompareTeam | null {
+  const tid = raw.team_id;
+  if (tid == null || tid === '') return null;
+  const id = String(tid);
+  const nested = raw.team && typeof raw.team === 'object' ? raw.team : {};
+  const name =
+    (typeof nested.name === 'string' && nested.name.trim()) ||
+    (typeof raw.name === 'string' && raw.name.trim()) ||
+    `Team ${id}`;
+  return {
+    id,
+    name,
+    stats: normalizeTeamStats(raw.stats),
+  };
+}
 
 interface PlayerStats {
   ft0: number;
@@ -28,18 +101,43 @@ interface Player {
 type CompareMode = 'players' | 'teams';
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const base = process.env.BACKEND_URL;
+  const base = process.env.BACKEND_URL || 'http://localhost:3001';
   let players: Player[] = [];
+  let teams: CompareTeam[] = [];
+  const session = await getSession(request.headers.get('Cookie'));
+  const user = session.get('user');
+  const isCoach = Boolean(user && (user.groups ?? []).includes('coaches'));
+  let defaultTeamId: string | null = null;
   try {
-    const res = await fetch(`${base}/api/players`);
-    if (res.ok) {
-      const data = await res.json() as Player[];
+    const [playersRes, teamsRes] = await Promise.all([
+      fetch(`${base}/api/players`),
+      fetch(`${base}/api/teams`),
+    ]);
+    if (playersRes.ok) {
+      const data = await playersRes.json() as Player[];
       players = data.filter(p => p.player_id && p.name);
+    }
+    if (teamsRes.ok) {
+      const data = await teamsRes.json() as ApiTeamRow[];
+      teams = (Array.isArray(data) ? data : [])
+        .map(mapApiTeamToCompareTeam)
+        .filter((t): t is CompareTeam => t != null)
+        .sort((a, b) => a.name.localeCompare(b.name));
     }
   } catch {
     players = [];
+    teams = [];
   }
-  return { players };
+  if (isCoach && user?.id) {
+    try {
+      const r = await fetch(`${base}/api/players/by-coach?coachId=${encodeURIComponent(user.id)}`);
+      if (r.ok) {
+        const data = (await r.json()) as { teamId?: number | string };
+        if (data.teamId != null && data.teamId !== '') defaultTeamId = String(data.teamId);
+      }
+    } catch {}
+  }
+  return { players, teams, defaultTeamId };
 }
 
 function pct(made: number, attempted: number): string {
@@ -142,22 +240,34 @@ function PlayerCombobox({ players, value, onChange, label, excludeId }: PlayerCo
 }
 
 const ComparePage: React.FC = () => {
-  const { players } = useLoaderData<typeof loader>();
+  const { players, teams: teamsList, defaultTeamId } = useLoaderData<typeof loader>();
   const [mode, setMode] = useState<CompareMode>('players');
   const [id1, setId1] = useState<number | null>(null);
   const [id2, setId2] = useState<number | null>(null);
-  const [teamId1, setTeamId1] = useState('');
+  const [teamId1, setTeamId1] = useState(defaultTeamId ?? '');
   const [teamId2, setTeamId2] = useState('');
 
-  const teams = Object.values(TEAMS_BY_ID);
+  const teamsById = useMemo(() => {
+    const m: Record<string, CompareTeam> = {};
+    for (const t of teamsList) {
+      m[t.id] = t;
+    }
+    return m;
+  }, [teamsList]);
 
   const handleModeChange = (newMode: CompareMode) => {
     setMode(newMode);
     setId1(null);
     setId2(null);
-    setTeamId1('');
+    setTeamId1(defaultTeamId ?? '');
     setTeamId2('');
   };
+
+  useEffect(() => {
+    if (mode !== 'teams') return;
+    if (teamId1) return;
+    if (defaultTeamId) setTeamId1(defaultTeamId);
+  }, [mode, teamId1, defaultTeamId]);
 
   const player1 = players.find(p => p.player_id === id1);
   const player2 = players.find(p => p.player_id === id2);
@@ -173,18 +283,40 @@ const ComparePage: React.FC = () => {
     { label: 'Draft Year', key: 'draft_year' },
   ];
 
-  const getTeamMetric = (teamId: string, category: 'metrics' | 'advancedMetrics', label: string) => {
-    if (!teamId) return '-';
-    const team = TEAMS_BY_ID[teamId];
-    const metricObj = team[category]?.find(m => m.label === label);
-    return metricObj ? metricObj.value : '-';
+  const formatTeamStat = (key: string, v: unknown): string => {
+    if (v == null || v === '') return '-';
+    if (typeof v === 'number') {
+      if (key.endsWith('_PCT')) return `${(v * 100).toFixed(1)}%`;
+      if (Number.isInteger(v)) return String(v);
+      return v.toFixed(2);
+    }
+    return String(v);
   };
 
-  const teamBaseMetrics = ['PPG', 'Def Rtg', 'Pace', 'RPG', 'APG', '3P%'];
-  const teamAdvancedMetrics = ['Off Rtg', 'Net Rtg', 'TOV%', 'Opp PPG'];
+  const getTeamStat = (teamId: string, key: string) => {
+    if (!teamId) return '-';
+    const team = teamsById[teamId];
+    if (!team) return '-';
+    return formatTeamStat(key, team.stats[key]);
+  };
 
-  const item1Name = mode === 'players' ? (player1?.name ?? '') : TEAMS_BY_ID[teamId1]?.name;
-  const item2Name = mode === 'players' ? (player2?.name ?? '') : TEAMS_BY_ID[teamId2]?.name;
+  const teamBaseStats: { label: string; key: string }[] = [
+    { label: 'Games', key: 'GP' },
+    { label: 'Wins', key: 'W' },
+    { label: 'Losses', key: 'L' },
+    { label: 'Win %', key: 'W_PCT' },
+    { label: 'PPG', key: 'PTS' },
+    { label: 'FG%', key: 'FG_PCT' },
+    { label: '3P%', key: 'FG3_PCT' },
+    { label: 'FT%', key: 'FT_PCT' },
+    { label: 'REB', key: 'REB' },
+    { label: 'AST', key: 'AST' },
+    { label: 'TOV', key: 'TOV' },
+    { label: '+/-', key: 'PLUS_MINUS' },
+  ];
+
+  const item1Name = mode === 'players' ? (player1?.name ?? '') : (teamsById[teamId1]?.name ?? '');
+  const item2Name = mode === 'players' ? (player2?.name ?? '') : (teamsById[teamId2]?.name ?? '');
   const showComparison = mode === 'players' ? (id1 !== null && id2 !== null) : (!!teamId1 && !!teamId2);
 
   return (
@@ -222,7 +354,7 @@ const ComparePage: React.FC = () => {
                 <label className="compareLabel">Team 1</label>
                 <select className="compareSelect" value={teamId1} onChange={e => setTeamId1(e.target.value)}>
                   <option value="">Select...</option>
-                  {teams.filter(t => t.id !== teamId2).map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                  {teamsList.filter(t => t.id !== teamId2).map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                 </select>
               </div>
               <div className="compareVsBadge">VS</div>
@@ -230,7 +362,7 @@ const ComparePage: React.FC = () => {
                 <label className="compareLabel">Team 2</label>
                 <select className="compareSelect" value={teamId2} onChange={e => setTeamId2(e.target.value)}>
                   <option value="">Select...</option>
-                  {teams.filter(t => t.id !== teamId1).map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                  {teamsList.filter(t => t.id !== teamId1).map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                 </select>
               </div>
             </>
@@ -267,20 +399,12 @@ const ComparePage: React.FC = () => {
               </>
             ) : (
               <>
-                <div className="compareSectionTitle">Team Metrics</div>
-                {teamBaseMetrics.map(label => (
+                <div className="compareSectionTitle">Team Stats</div>
+                {teamBaseStats.map(({ label, key }) => (
                   <div className="compareTableRow" key={label}>
-                    <div className="compareColItem">{getTeamMetric(teamId1, 'metrics', label)}</div>
+                    <div className="compareColItem">{getTeamStat(teamId1, key)}</div>
                     <div className="compareColLabel">{label}</div>
-                    <div className="compareColItem">{getTeamMetric(teamId2, 'metrics', label)}</div>
-                  </div>
-                ))}
-                <div className="compareSectionTitle">Advanced Metrics</div>
-                {teamAdvancedMetrics.map(label => (
-                  <div className="compareTableRow" key={label}>
-                    <div className="compareColItem">{getTeamMetric(teamId1, 'advancedMetrics', label)}</div>
-                    <div className="compareColLabel">{label}</div>
-                    <div className="compareColItem">{getTeamMetric(teamId2, 'advancedMetrics', label)}</div>
+                    <div className="compareColItem">{getTeamStat(teamId2, key)}</div>
                   </div>
                 ))}
               </>

@@ -7,7 +7,7 @@ type Team = { name: string; players: Player[]; };
 const teams: Team[] = [];
 
 const CompareWithMoney: React.FC = () => {
-  const [mode, setMode] = useState<"players"|"teams">("players");
+  const [mode, setMode] = useState<"players" | "teams">("players");
   const [playerAIndex, setPlayerAIndex] = useState(0);
   const [playerBIndex, setPlayerBIndex] = useState(0);
   const [teamAIndex, setTeamAIndex] = useState(0);
@@ -55,18 +55,18 @@ const CompareWithMoney: React.FC = () => {
               <tr><td>Points</td><td>{sA.points}</td><td>{sB.points}</td></tr>
               <tr><td>Rebounds</td><td>{sA.rebounds}</td><td>{sB.rebounds}</td></tr>
               <tr><td>Assists</td><td>{sA.assists}</td><td>{sB.assists}</td></tr>
-              <tr><td>FG%</td><td>{(sA.fgPercent/tA.players.length).toFixed(1)}</td><td>{(sB.fgPercent/tB.players.length).toFixed(1)}</td></tr>
-              <tr><td>3P%</td><td>{(sA.threePPercent/tA.players.length).toFixed(1)}</td><td>{(sB.threePPercent/tB.players.length).toFixed(1)}</td></tr>
-              <tr><td>FT%</td><td>{(sA.ftPercent/tA.players.length).toFixed(1)}</td><td>{(sB.ftPercent/tB.players.length).toFixed(1)}</td></tr>
+              <tr><td>FG%</td><td>{(sA.fgPercent / tA.players.length).toFixed(1)}</td><td>{(sB.fgPercent / tB.players.length).toFixed(1)}</td></tr>
+              <tr><td>3P%</td><td>{(sA.threePPercent / tA.players.length).toFixed(1)}</td><td>{(sB.threePPercent / tB.players.length).toFixed(1)}</td></tr>
+              <tr><td>FT%</td><td>{(sA.ftPercent / tA.players.length).toFixed(1)}</td><td>{(sB.ftPercent / tB.players.length).toFixed(1)}</td></tr>
               <tr><td>Steals</td><td>{sA.steals}</td><td>{sB.steals}</td></tr>
               <tr><td>Blocks</td><td>{sA.blocks}</td><td>{sB.blocks}</td></tr>
               <tr><td>Turnovers</td><td>{sA.turnovers}</td><td>{sB.turnovers}</td></tr>
               <tr><td>Efficiency</td>
-                <td>{((sA.points+sA.rebounds+sA.assists+sA.steals+sA.blocks-sA.turnovers)/tA.players.length).toFixed(1)}</td>
-                <td>{((sB.points+sB.rebounds+sB.assists+sB.steals+sB.blocks-sB.turnovers)/tB.players.length).toFixed(1)}</td>
+                <td>{((sA.points + sA.rebounds + sA.assists + sA.steals + sA.blocks - sA.turnovers) / tA.players.length).toFixed(1)}</td>
+                <td>{((sB.points + sB.rebounds + sB.assists + sB.steals + sB.blocks - sB.turnovers) / tB.players.length).toFixed(1)}</td>
               </tr>
-              <tr><td>Salary</td><td>${tA.players.reduce((a,p)=>a+p.salary,0).toLocaleString()}</td>
-                  <td>${tB.players.reduce((a,p)=>a+p.salary,0).toLocaleString()}</td></tr>
+              <tr><td>Salary</td><td>${tA.players.reduce((a, p) => a + p.salary, 0).toLocaleString()}</td>
+                <td>${tB.players.reduce((a, p) => a + p.salary, 0).toLocaleString()}</td></tr>
             </tbody>
           </table>
         </div>
@@ -78,26 +78,26 @@ const CompareWithMoney: React.FC = () => {
     <div>
       <h1 className="ProfileCSS">Basketball Compare (Internal)</h1>
       <div className="nav-tabs">
-        <div className={`nav-tab ${mode==="players"?"active":""}`} onClick={()=>setMode("players")}>Players vs Players</div>
-        <div className={`nav-tab ${mode==="teams"?"active":""}`} onClick={()=>setMode("teams")}>Teams vs Teams</div>
+        <div className={`nav-tab ${mode === "players" ? "active" : ""}`} onClick={() => setMode("players")}>Players vs Players</div>
+        <div className={`nav-tab ${mode === "teams" ? "active" : ""}`} onClick={() => setMode("teams")}>Teams vs Teams</div>
       </div>
       <div className="roundedBox ButtonAlign">
-        {mode==="players" ? (
+        {mode === "players" ? (
           <>
-            <select className="roundedButtons" value={playerAIndex} onChange={e=>setPlayerAIndex(parseInt(e.target.value))}>
-              {teams[0]?.players.map((p,i)=><option key={i} value={i}>{p.name}</option>)}
+            <select className="roundedButtons" value={playerAIndex} onChange={e => setPlayerAIndex(parseInt(e.target.value))}>
+              {teams[0]?.players.map((p, i) => <option key={i} value={i}>{p.name}</option>)}
             </select>
-            <select className="roundedButtons" value={playerBIndex} onChange={e=>setPlayerBIndex(parseInt(e.target.value))}>
-              {teams[1]?.players.map((p,i)=><option key={i} value={i}>{p.name}</option>)}
+            <select className="roundedButtons" value={playerBIndex} onChange={e => setPlayerBIndex(parseInt(e.target.value))}>
+              {teams[1]?.players.map((p, i) => <option key={i} value={i}>{p.name}</option>)}
             </select>
           </>
         ) : (
           <>
-            <select className="roundedButtons" value={teamAIndex} onChange={e=>setTeamAIndex(parseInt(e.target.value))}>
-              {teams.map((t,i)=><option key={i} value={i}>{t.name}</option>)}
+            <select className="roundedButtons" value={teamAIndex} onChange={e => setTeamAIndex(parseInt(e.target.value))}>
+              {teams.map((t, i) => <option key={i} value={i}>{t.name}</option>)}
             </select>
-            <select className="roundedButtons" value={teamBIndex} onChange={e=>setTeamBIndex(parseInt(e.target.value))}>
-              {teams.map((t,i)=><option key={i} value={i}>{t.name}</option>)}
+            <select className="roundedButtons" value={teamBIndex} onChange={e => setTeamBIndex(parseInt(e.target.value))}>
+              {teams.map((t, i) => <option key={i} value={i}>{t.name}</option>)}
             </select>
           </>
         )}

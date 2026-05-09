@@ -7,8 +7,11 @@ const { spawn } = require('child_process');
 const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
+const { fetchTeamGamelogRecent, fetchCommonPlayerInfo } = require('./services/nba-stats/nbaStatsClient');
+const { runNbaFeedSync, FEED_GAMES_META_ARTICLE_ID } = require('./services/nba-feed/feedSync');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, ScanCommand, PutCommand, DeleteCommand, GetCommand, UpdateCommand } = require('@aws-sdk/lib-dynamodb');
+const crypto = require('crypto');
 
 const app = express();
 app.use(cors());
@@ -22,6 +25,183 @@ const client = new DynamoDBClient({
     }
 });
 const docClient = DynamoDBDocumentClient.from(client);
+
+const FEED_TABLE = process.env.FEED_TABLE || 'feed';
+const NBA_FEED_POLL_MS = Number(process.env.NBA_FEED_POLL_MS || process.env.NBA_FEED_REFRESH_MS || process.env.NBA_ARTICLES_REFRESH_MS || 3 * 60 * 60 * 1000);
+const NOTES_TABLE = process.env.NOTES_TABLE || 'Notes';
+
+let PLAYER_RANK_SEED_BY_TEAM = null;
+try {
+    PLAYER_RANK_SEED_BY_TEAM = require('./seed/player_ranks_by_team.json');
+} catch (_) {}
+
+function unwrapDynamoNumberAttr(v) {
+    if (v == null) return null;
+    if (typeof v === 'number' && Number.isFinite(v)) return v;
+    if (typeof v === 'string' && v.trim() !== '' && Number.isFinite(Number(v))) return Number(v);
+    if (typeof v === 'object' && v !== null && typeof v.N === 'string' && Number.isFinite(Number(v.N))) return Number(v.N);
+    return null;
+}
+
+function pickPlayerRankMapFromTeamRecord(teamItem) {
+    const nested = teamItem?.team;
+    const raw = nested?.player_ranks ?? teamItem?.player_ranks;
+    if (!raw || typeof raw !== 'object') return new Map();
+    const out = new Map();
+    const assignEntry = (k, v) => {
+        const n = unwrapDynamoNumberAttr(v);
+        if (n != null) out.set(String(k), n);
+    };
+    if (raw.M && typeof raw.M === 'object') {
+        for (const [k, v] of Object.entries(raw.M)) assignEntry(k, v);
+        return out;
+    }
+    for (const [k, v] of Object.entries(raw)) {
+        if (k === 'M' || k === 'L') continue;
+        assignEntry(k, v);
+    }
+    return out;
+}
+
+async function resolveTeamForCoach(coachId) {
+    const cid = String(coachId ?? '').trim();
+    if (!cid) return null;
+    const teamsResult = await docClient.send(new ScanCommand({ TableName: 'Teams' }));
+    const team = (teamsResult.Items ?? []).find((item) => {
+        const staff = item.team?.staff ?? {};
+        return Object.values(staff).some((v) => String(v) === cid);
+    });
+    if (!team) return null;
+    const teamId = team.team_id;
+    let teamFull = team;
+    try {
+        const got = await docClient.send(
+            new GetCommand({
+                TableName: 'Teams',
+                Key: { team_id: team.team_id },
+            })
+        );
+        if (got.Item) teamFull = got.Item;
+    } catch (_) {}
+    return { teamFull, teamId };
+}
+
+async function loadValidUserIdSet() {
+    const usersResult = await docClient.send(new ScanCommand({ TableName: 'Users' }));
+    return new Set(
+        (usersResult.Items ?? [])
+            .map((u) => String(u.userId ?? u.id ?? '').trim())
+            .filter(Boolean)
+    );
+}
+
+function todayEtYmd() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
+}
+
+async function getLatestStoredGameDateYmd() {
+  try {
+    const got = await docClient.send(
+      new GetCommand({
+        TableName: FEED_TABLE,
+        Key: { article_id: FEED_GAMES_META_ARTICLE_ID },
+      })
+    );
+    const y = got.Item && got.Item.latest_game_date_ymd;
+    if (typeof y === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(y)) return y;
+  } catch (_) {}
+  let maxYmd = null;
+  let eks;
+  do {
+    const resp = await docClient.send(
+      new ScanCommand({
+        TableName: FEED_TABLE,
+        ExclusiveStartKey: eks,
+        ProjectionExpression: 'recent_games',
+        FilterExpression: 'attribute_exists(recent_games)',
+      })
+    );
+    for (const it of resp.Items || []) {
+      for (const g of it.recent_games || []) {
+        const d = g && g.game_date;
+        if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) {
+          if (maxYmd == null || d > maxYmd) maxYmd = d;
+        }
+      }
+    }
+    eks = resp.LastEvaluatedKey;
+  } while (eks);
+  return maxYmd;
+}
+
+async function maybeRunNbaFeed() {
+  try {
+    const today = todayEtYmd();
+    const latest = await getLatestStoredGameDateYmd();
+    if (latest != null && latest >= today) {
+      return;
+    }
+    await runNbaFeedSync(docClient, { tableName: FEED_TABLE });
+    console.log('nba feed written to dynamodb', FEED_TABLE);
+  } catch (e) {
+    console.error('nba feed dynamo sync failed', String(e));
+  }
+}
+
+void maybeRunNbaFeed();
+setInterval(() => {
+  void maybeRunNbaFeed();
+}, NBA_FEED_POLL_MS);
+
+app.get('/api/feed', async (req, res) => {
+    try {
+        let all = [];
+        let eks;
+        do {
+            const resp = await docClient.send(new ScanCommand({
+                TableName: FEED_TABLE,
+                ExclusiveStartKey: eks,
+            }));
+            all = all.concat(resp.Items || []);
+            eks = resp.LastEvaluatedKey;
+        } while (eks);
+
+        const gameRows = (all || []).filter((it) => Array.isArray(it.recent_games) && it.recent_games.length > 0);
+        const articleRows = (all || []).filter((it) => it.title && it.url && !Array.isArray(it.recent_games));
+
+        const forYouGames = [];
+        for (const row of gameRows) {
+            const ua = row.updated_at || '';
+            for (const g of row.recent_games) {
+                forYouGames.push({ kind: 'game', updated_at: ua, game: g });
+            }
+        }
+
+        const articles = articleRows.map((a) => ({
+            kind: 'article',
+            updated_at: a.updated_at || '',
+            article_id: a.article_id,
+            title: a.title,
+            url: a.url,
+            source: a.source,
+            thumbnail_url: a.thumbnail_url,
+        }));
+
+        const forYou = [...forYouGames, ...articles].sort((a, b) =>
+            String(b.updated_at || '').localeCompare(String(a.updated_at || ''))
+        );
+
+        res.status(200).json({ forYou });
+    } catch (err) {
+        console.error('Error fetching feed:', err);
+        res.status(500).json({ error: 'Failed to fetch feed' });
+    }
+});
 
 const VIDEOS_TABLE = process.env.VIDEOS_TABLE || 'videos';
 const STATS_WORKER_CONCURRENCY = Number(process.env.STATS_WORKER_CONCURRENCY || 1);
@@ -527,23 +707,179 @@ app.get('/api/players/by-coach', async (req, res) => {
     if (!coachId) return res.status(400).json({ error: 'coachId required' });
 
     try {
-        const teamsResult = await docClient.send(new ScanCommand({ TableName: 'Teams' }));
-        const team = (teamsResult.Items ?? []).find(item => {
-            const staff = item.team?.staff ?? {};
-            return Object.values(staff).includes(coachId);
-        });
+        const resolved = await resolveTeamForCoach(String(coachId));
+        if (!resolved) return res.status(404).json({ error: 'No team found for this coach' });
+        const { teamFull, teamId } = resolved;
 
-        if (!team) return res.status(404).json({ error: 'No team found for this coach' });
+        let rankMap = pickPlayerRankMapFromTeamRecord(teamFull);
+        if (rankMap.size === 0 && PLAYER_RANK_SEED_BY_TEAM && typeof PLAYER_RANK_SEED_BY_TEAM === 'object') {
+            const seed = PLAYER_RANK_SEED_BY_TEAM[String(teamId)];
+            if (seed && typeof seed === 'object') {
+                rankMap = new Map(
+                    Object.entries(seed)
+                        .map(([k, v]) => [String(k), Number(v)])
+                        .filter(([, n]) => Number.isFinite(n))
+                );
+            }
+        }
 
-        const teamId = team.team_id;
-
+        const validUserIds = await loadValidUserIdSet();
         const playersResult = await docClient.send(new ScanCommand({ TableName: 'Players' }));
-        const players = (playersResult.Items ?? []).filter(p => p.team_id === teamId);
+        const players = (playersResult.Items ?? [])
+            .filter((p) => String(p.team_id) === String(teamId))
+            .filter((p) => {
+                const uid = String(p.user_id ?? '').trim();
+                return uid !== '' && validUserIds.has(uid);
+            })
+            .map((p) => {
+                const pid = p.player_id ?? p.id;
+                const fromMap = pid != null ? rankMap.get(String(pid)) : undefined;
+                const fromPlayer = unwrapDynamoNumberAttr(p.overall_rank);
+                const overall_rank = fromMap != null ? fromMap : fromPlayer;
+                if (overall_rank == null) return p;
+                return { ...p, overall_rank };
+            });
 
         res.status(200).json({ players, teamId });
     } catch (error) {
         console.error('Error fetching players by coach:', error);
         res.status(500).json({ error: 'Failed to fetch players' });
+    }
+});
+
+app.get('/api/coach/player-assign/options', async (req, res) => {
+    const coachId = String(req.query.coachId ?? '').trim();
+    if (!coachId) return res.status(400).json({ error: 'coachId required' });
+    try {
+        const resolved = await resolveTeamForCoach(coachId);
+        if (!resolved) return res.status(404).json({ error: 'No team found for this coach' });
+        const { teamId } = resolved;
+        const usersResult = await docClient.send(new ScanCommand({ TableName: 'Users' }));
+        const validUserIds = new Set(
+            (usersResult.Items ?? [])
+                .map((u) => String(u.userId ?? u.id ?? '').trim())
+                .filter(Boolean)
+        );
+        const eligibleUsers = (usersResult.Items ?? [])
+            .filter((u) => {
+                const pid = u.player_id ?? u.playerId;
+                if (pid != null && String(pid).trim() !== '') return false;
+                const uid = String(u.userId ?? u.id ?? '').trim();
+                return !!uid;
+            })
+            .map((u) => ({
+                userId: String(u.userId ?? u.id),
+                name:
+                    String(u.name ?? u.displayName ?? u.email ?? u.userId ?? u.id ?? '').trim() ||
+                    String(u.userId ?? u.id),
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+        const playersResult = await docClient.send(new ScanCommand({ TableName: 'Players' }));
+        const openSlots = (playersResult.Items ?? [])
+            .filter((p) => String(p.team_id) === String(teamId))
+            .filter((p) => {
+                const uid = String(p.user_id ?? '').trim();
+                return !uid || !validUserIds.has(uid);
+            })
+            .map((p) => ({
+                player_id: p.player_id ?? p.id,
+                name: String(p.name ?? 'Player'),
+                position: p.position != null ? String(p.position) : undefined,
+            }))
+            .filter((x) => x.player_id != null && String(x.player_id).trim() !== '')
+            .sort((a, b) => String(a.name).localeCompare(String(b.name)));
+        return res.status(200).json({ ok: true, eligibleUsers, openSlots, teamId });
+    } catch (e) {
+        console.error('player-assign/options failed', String(e));
+        return res.status(500).json({ error: 'Failed to load options' });
+    }
+});
+
+app.post('/api/coach/player-assign', async (req, res) => {
+    const coachId = String(req.body?.coachId ?? '').trim();
+    const userId = String(req.body?.userId ?? '').trim();
+    const rosterPlayerId = String(req.body?.rosterPlayerId ?? '').trim();
+    if (!coachId || !userId || !rosterPlayerId) {
+        return res.status(400).json({ error: 'coachId, userId, rosterPlayerId required' });
+    }
+    try {
+        const resolved = await resolveTeamForCoach(coachId);
+        if (!resolved) return res.status(404).json({ error: 'No team found for this coach' });
+        const { teamId } = resolved;
+        const validUserIds = await loadValidUserIdSet();
+        const usersResult = await docClient.send(new ScanCommand({ TableName: 'Users' }));
+        const userRow = (usersResult.Items ?? []).find((u) => String(u.userId ?? u.id ?? '') === userId);
+        if (!userRow) return res.status(404).json({ error: 'User not found' });
+        const existingPid = userRow.player_id ?? userRow.playerId;
+        if (existingPid != null && String(existingPid).trim() !== '') {
+            return res.status(400).json({ error: 'User already linked to a player' });
+        }
+        const playersResult = await docClient.send(new ScanCommand({ TableName: 'Players' }));
+        const playerRow = (playersResult.Items ?? []).find(
+            (p) =>
+                String(p.team_id) === String(teamId) &&
+                String(p.player_id ?? p.id ?? '') === String(rosterPlayerId)
+        );
+        if (!playerRow) return res.status(404).json({ error: 'Roster player not on your team' });
+        const uidOnPlayer = String(playerRow.user_id ?? '').trim();
+        if (uidOnPlayer && validUserIds.has(uidOnPlayer)) {
+            return res.status(400).json({ error: 'Roster slot already assigned' });
+        }
+        const pk = playerRow.player_id ?? playerRow.id;
+        if (pk == null || String(pk).trim() === '') {
+            return res.status(400).json({ error: 'Invalid roster record' });
+        }
+        const linkPid =
+            typeof pk === 'number' ? pk : Number.isFinite(Number(pk)) ? Number(pk) : String(pk);
+        await docClient.send(
+            new UpdateCommand({
+                TableName: 'Players',
+                Key: { player_id: pk },
+                UpdateExpression: 'SET user_id = :uid',
+                ExpressionAttributeValues: { ':uid': userId },
+            })
+        );
+        await docClient.send(
+            new UpdateCommand({
+                TableName: 'Users',
+                Key: { userId },
+                UpdateExpression: 'SET player_id = :pid',
+                ExpressionAttributeValues: { ':pid': linkPid },
+            })
+        );
+        return res.status(200).json({ ok: true });
+    } catch (e) {
+        console.error('player-assign failed', String(e));
+        return res.status(500).json({ error: 'Failed to assign player' });
+    }
+});
+
+app.get('/api/player/:playerId', async (req, res) => {
+    const want = String(req.params.playerId || '').trim();
+    if (!want) return res.status(400).json({ error: 'playerId required' });
+    try {
+        const response = await docClient.send(new ScanCommand({ TableName: 'Players' }));
+        const items = response.Items || [];
+        const p = items.find(
+            (x) =>
+                String(x.player_id ?? '') === want ||
+                String(x.id ?? '') === want
+        );
+        if (!p) return res.status(404).json({ error: 'Player not found' });
+        const nbaPid = Number(p.player_id ?? want);
+        let out = { ...p };
+        if (Number.isFinite(nbaPid) && nbaPid > 0) {
+            try {
+                const nba_api = await fetchCommonPlayerInfo(nbaPid);
+                if (nba_api) out = { ...out, nba_api };
+            } catch (e) {
+                console.warn('commonplayerinfo failed', String(nbaPid), String(e && e.message ? e.message : e));
+            }
+        }
+        res.status(200).json(out);
+    } catch (error) {
+        console.error('Error fetching player:', error);
+        res.status(500).json({ error: 'Failed to fetch player' });
     }
 });
 
@@ -555,6 +891,18 @@ app.get('/api/players', async (req, res) => {
     } catch (error) {
         console.error("Error fetching players:", error);
         res.status(500).json({ error: "Failed to fetch players" });
+    }
+});
+
+app.get('/api/team-gamelog', async (req, res) => {
+    const { teamId, limit, season, seasonType } = req.query;
+    if (!teamId) return res.status(400).json({ error: 'teamId required' });
+    try {
+        const games = await fetchTeamGamelogRecent(teamId, { limit, season, seasonType });
+        res.status(200).json({ games });
+    } catch (e) {
+        console.error('team-gamelog error:', e);
+        res.status(500).json({ error: 'Failed to fetch team gamelog' });
     }
 });
 
@@ -705,6 +1053,76 @@ app.get('/api/users', async (req, res) => {
         console.error("Error fetching users:", error);
         res.status(500).json({ error: "Failed to fetch users" });
     }
+});
+
+app.post('/api/notes/create', async (req, res) => {
+  try {
+    const sender_id = String(req.body?.sender_id || '').trim();
+    const sender_name = String(req.body?.sender_name || '').trim();
+    const recipient_id = String(req.body?.recipient_id || '').trim();
+    const note_content = String(req.body?.note_content || '').trim();
+    if (!sender_id || !recipient_id || !note_content) {
+      return res.status(400).json({ error: 'sender_id, recipient_id, note_content required' });
+    }
+    const note_id = crypto.randomUUID();
+    const date_created = new Date().toISOString();
+    await docClient.send(
+      new PutCommand({
+        TableName: NOTES_TABLE,
+        Item: {
+          notes_id: note_id,
+          note_id,
+          sender_id,
+          sender_name: sender_name || sender_id,
+          recipient_id,
+          note_content,
+          date_created,
+        },
+      })
+    );
+    return res.status(200).json({ ok: true, note_id, date_created });
+  } catch (e) {
+    console.error('notes/create failed', String(e));
+    return res.status(500).json({ error: 'Failed to create note' });
+  }
+});
+
+app.get('/api/notes/by-recipient', async (req, res) => {
+  try {
+    const recipientId = String(req.query?.recipientId || '').trim();
+    if (!recipientId) return res.status(400).json({ error: 'recipientId required' });
+    const scanned = await docClient.send(
+      new ScanCommand({
+        TableName: NOTES_TABLE,
+        FilterExpression: 'recipient_id = :rid',
+        ExpressionAttributeValues: { ':rid': recipientId },
+      })
+    );
+    const notes = (scanned.Items || []).sort((a, b) =>
+      String(b.date_created || '').localeCompare(String(a.date_created || ''))
+    );
+    return res.status(200).json({ ok: true, notes });
+  } catch (e) {
+    console.error('notes/by-recipient failed', String(e));
+    return res.status(500).json({ error: 'Failed to fetch notes' });
+  }
+});
+
+app.post('/api/notes/delete', async (req, res) => {
+  try {
+    const note_id = String(req.body?.note_id || req.body?.notes_id || '').trim();
+    if (!note_id) return res.status(400).json({ error: 'note_id required' });
+    await docClient.send(
+      new DeleteCommand({
+        TableName: NOTES_TABLE,
+        Key: { notes_id: note_id },
+      })
+    );
+    return res.status(200).json({ ok: true, note_id });
+  } catch (e) {
+    console.error('notes/delete failed', String(e));
+    return res.status(500).json({ error: 'Failed to delete note' });
+  }
 });
 
 const PORT = process.env.PORT || 5000;

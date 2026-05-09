@@ -77,6 +77,18 @@
   box-sizing: border-box;
 }
 
+.feedLayout--coachTeam {
+  width: min(92vw, 1240px);
+  max-width: 1240px;
+}
+
+.feedLayout--coachTeam .managePlayersGrid {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
 .feedSidebar {
   position: fixed;
   left: 24px;
@@ -105,6 +117,14 @@
 .feedSidebarBtn:hover {
   background: #2d2d35;
   color: #f4f4f5;
+}
+
+.feedSidebarBtnDisabled,
+.feedSidebarBtnDisabled:hover {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: none;
+  color: #a1a1aa;
 }
 
 .feedPage {
@@ -219,6 +239,12 @@
   margin: 0 auto;
 }
 
+.feedList--coachTeam {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+}
+
 .feedCardLink {
   text-decoration: none;
   color: inherit;
@@ -273,6 +299,16 @@
   line-height: 1.25;
 }
 
+.feedCardTitle--newsWithThumb {
+  padding-bottom: 12px;
+  margin-bottom: 0;
+}
+
+.feedNewsSource {
+  font-weight: 500;
+  color: #a1a1aa;
+}
+
 .feedActor {
   font-size: 0.9rem;
   color: #a1a1aa;
@@ -292,6 +328,16 @@
   color: #d4d4d8;
 }
 
+a.feedSummary {
+  display: block;
+  color: #d4d4d8;
+  text-decoration: none;
+}
+
+a.feedSummary:hover {
+  text-decoration: underline;
+}
+
 .feedMeta {
   font-size: 0.85rem;
   color: #6b6b72;
@@ -299,6 +345,74 @@
 
 .feedGameResult {
   margin-bottom: 8px;
+}
+
+.feedGameResult--upcoming {
+  margin-top: 4px;
+}
+
+.feedUpcomingMatchup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 6px;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  color: #e4e4e7;
+}
+
+.feedTeamSide {
+  font-weight: 700;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feedTeamSide--away {
+  text-align: left;
+  justify-self: start;
+}
+
+.feedTeamSide--home {
+  text-align: right;
+  justify-self: end;
+}
+
+.feedUpcomingMatchup .feedVs {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #6366f1;
+  text-transform: lowercase;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.feedMeta--when {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 0;
+  line-height: 1.25;
+}
+
+.feedNewsThumbWrap {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #27272a;
+}
+
+.feedNewsThumb {
+  display: block;
+  width: 100%;
+  max-height: min(360px, 70vh);
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  vertical-align: middle;
 }
 
 .feedGameResult .feedInlinePlayerWrap,
@@ -473,8 +587,10 @@
 
 .feedHighlightThumb {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  max-height: min(360px, 70vh);
+  height: auto;
+  object-fit: contain;
+  object-position: center;
   border-radius: 8px;
   display: block;
   background: #27272a;
@@ -497,24 +613,73 @@
   font-size: 0.9rem;
 }
 
-.feedFloatingUpload {
+.feedDialogOverlay {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  padding: 12px 20px;
-  background: #6366f1;
-  border: none;
-  border-radius: 24px;
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  z-index: 999;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1100;
 }
 
-.feedFloatingUpload:hover {
-  background: #5558e3;
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+.feedDialog {
+  width: 100%;
+  max-width: 560px;
+  background: #1e1e24;
+  border: 1px solid #2d2d33;
+  border-radius: 12px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.55);
+  overflow: visible;
+}
+
+.feedDialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #2d2d33;
+}
+
+.feedDialogTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: #f4f4f5;
+}
+
+.feedDialogClose {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: #2d2d35;
+  color: #e5e7eb;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.feedDialogClose:hover {
+  background: #3d3d45;
+}
+
+.feedDialogBody {
+  padding: 18px;
+  padding-bottom: 28px;
+  overflow: visible;
+}
+
+.feedDialogBody .manageCoachesForm {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.feedDialogBody .manageCoachesDropdown,
+.feedDialogBody .manageCoachesDropdownEmpty {
+  z-index: 20;
 }
