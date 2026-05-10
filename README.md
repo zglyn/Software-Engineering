@@ -26,6 +26,6 @@ The backend API is tested across four main modules. Each test script validates s
 
 ### How to Run These Tests
 1. **Open Postman** and click the **Import** button.
-2. Drag and drop the `postman-tests` folder into the import window.
-3. Set your **Environment Variables** (specifically the `base_url` for your backend server).
+2. Drag and drop the `postman_tests` folder into the import window.
+3. Set your **Environment Variables** (specifically the `base_url` of the backend server).
 4. Use the **Collection Runner** to execute all tests in a folder at once and view the pass/fail results.
