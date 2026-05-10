@@ -1,4 +1,6 @@
+/// <reference types="vitest" />
 import { reactRouter } from "@react-router/dev/vite";
+import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
@@ -6,9 +8,18 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
-    plugins: [reactRouter(), tsconfigPaths()],
+    // Conditionally use 'react()' for tests, and 'reactRouter()' for normal dev/builds
+    plugins: [
+      process.env.VITEST ? react() : reactRouter(), 
+      tsconfigPaths()
+    ],
     server: {
       port: 3000,
+    },
+    test: {
+      environment: "jsdom",
+      globals: true,
+      setupFiles: "./tests/setup.ts", // <--- ADD THIS LINE
     },
     define: {
       "process.env.COGNITO_CLIENT_ID": JSON.stringify(env.COGNITO_CLIENT_ID),
