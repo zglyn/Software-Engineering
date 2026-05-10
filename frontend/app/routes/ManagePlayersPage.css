@@ -1,0 +1,444 @@
+.managePlayersWrapper {
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  background-color: #0f0f12;
+  color: #f4f4f5;
+  padding: 0 0 48px;
+}
+
+.managePlayersHeader {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #2d2d33;
+  background: #1e1e24;
+  margin-bottom: 24px;
+}
+
+.managePlayersBackBtn {
+  text-decoration: none;
+  color: #a1a1aa;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-right: 20px;
+  transition: color 0.2s ease;
+}
+
+.managePlayersBackBtn:hover {
+  color: #f4f4f5;
+}
+
+.managePlayersTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.managePlayersContainer {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.managePlayersCard {
+  background: #1e1e24;
+  border: 1px solid #2d2d33;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.managePlayersCardTitle {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f4f4f5;
+  border-bottom: 1px solid #2d2d33;
+  padding-bottom: 12px;
+}
+
+.managePlayersForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.managePlayersInputGroup {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 150px;
+  gap: 8px;
+}
+
+.managePlayersLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.managePlayersInput,
+.managePlayersSelect {
+  background: #0f0f12;
+  border: 1px solid #2d2d35;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #f4f4f5;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.managePlayersSelect {
+  cursor: pointer;
+}
+
+.managePlayersInput:focus,
+.managePlayersSelect:focus {
+  border-color: #6366f1;
+}
+
+.managePlayersBtnPrimary {
+  background: #6366f1;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease;
+  height: 42px;
+}
+
+.managePlayersBtnPrimary:hover:not(:disabled) {
+  background: #5558e3;
+}
+
+.managePlayersBtnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.managePlayersBtnPrimary--small {
+  height: 40px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+}
+
+.managePlayersBtnSecondary {
+  background: transparent;
+  color: #e4e4e7;
+  border: 1px solid #3d3d45;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  height: 40px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.managePlayersBtnSecondary--small {
+  padding: 10px 14px;
+  height: 40px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+}
+
+.managePlayersBtnSecondary:hover {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.managePlayersGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .managePlayersGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .managePlayersGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.managePlayersGridItem {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #27272a;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #3d3d45;
+}
+
+.managePlayersCardNavLink {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.managePlayersCardNavLink:hover .managePlayersName {
+  color: #a5b4fc;
+}
+
+.managePlayersCardTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.managePlayersHeadshot {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  flex-shrink: 0;
+  background: #3d3d45;
+}
+
+.managePlayersHeadshotPlaceholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #3d3d45;
+  flex-shrink: 0;
+}
+
+.managePlayersCardDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.managePlayersJerseyCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.managePlayersCardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.managePlayersCardStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid #3d3d45;
+  padding-top: 14px;
+}
+
+.managePlayersStatItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.managePlayersStatLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.managePlayersStatValue {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e4e4e7;
+}
+
+.managePlayersInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.managePlayersNumberBadge {
+  display: inline-block;
+  background: #6366f1;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+
+.managePlayersDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.managePlayersName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f4f4f5;
+  text-align: left;
+  width: 100%;
+}
+
+.managePlayersNameRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.managePlayersNameRow .managePlayersName {
+  width: auto;
+}
+
+.managePlayersRankPill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(129, 140, 248, 0.35);
+  padding: 2px 8px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.managePlayersPos {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.managePlayersDialogTextarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  background: #0f0f12;
+  border: 1px solid #2d2d35;
+  border-radius: 10px;
+  padding: 12px;
+  padding-right: 16px;
+  color: #f4f4f5;
+  font-size: 0.95rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.managePlayersDialogTextarea:focus {
+  border-color: #6366f1;
+}
+
+.managePlayersNotesList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 380px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.managePlayersNotesEmpty {
+  color: #a1a1aa;
+  font-size: 0.95rem;
+  padding: 6px 2px;
+}
+
+.managePlayersNoteItem {
+  border: 1px solid #2d2d33;
+  background: #27272a;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.managePlayersNoteItemTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.managePlayersNoteDate {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.managePlayersNoteDeleteBtn {
+  background: transparent;
+  border: 1px solid #3d3d45;
+  color: #a1a1aa;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.managePlayersNoteDeleteBtn svg {
+  display: block;
+}
+
+.managePlayersNoteDeleteBtn:hover {
+  border-color: #f43f5e;
+  background: rgba(244, 63, 94, 0.08);
+  color: #fca5a5;
+}
+
+.managePlayersNotePreview {
+  color: #d4d4d8;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+
+.managePlayersBtnDanger {
+  background: transparent;
+  color: #f43f5e;
+  border: 1px solid #f43f5e;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.managePlayersBtnDanger:hover {
+  background: rgba(244, 63, 94, 0.1);
+}

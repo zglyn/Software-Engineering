@@ -1,0 +1,120 @@
+.teamStatsPage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0f0f12 0%, #1a1a1f 100%);
+  color: #f4f4f5;
+}
+
+.teamStatsHeader {
+  padding: 16px 24px;
+  border-bottom: 1px solid #2d2d35;
+}
+
+.teamStatsBack {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.teamStatsBack:hover {
+  color: #c4b5fd;
+}
+
+.teamStatsContent {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+.teamStatsMessage {
+  margin: 0 0 16px;
+  color: #9ca3af;
+}
+
+.teamStatsName {
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.teamStatsRecord {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  color: #c4b5fd;
+}
+
+.teamStatsTrend {
+  margin: 0 0 24px;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.teamStatsSection {
+  margin-bottom: 28px;
+}
+
+.teamStatsSectionTitle {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.teamStatsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.teamStatsCard {
+  padding: 14px;
+  background: #1a1a1f;
+  border: 1px solid #2d2d35;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.teamStatsLabel {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.teamStatsValue {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+.teamStatsRoster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #1a1a1f;
+  border: 1px solid #2d2d35;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.teamStatsRosterItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid #2d2d35;
+}
+
+.teamStatsRosterItem:last-child {
+  border-bottom: none;
+}
+
+.teamStatsRosterName {
+  font-size: 0.95rem;
+  color: #e5e7eb;
+}
+
+.teamStatsRosterValue {
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
