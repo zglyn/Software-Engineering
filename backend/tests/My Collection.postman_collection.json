@@ -1,0 +1,476 @@
+{
+  "info": {
+    "_postman_id": "58927fca-0775-4d34-bd3b-8e24d1b69688",
+    "name": "My Collection",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53902037"
+  },
+  "item": [
+    {
+      "name": "UserManagement",
+      "item": [
+        {
+          "name": "Users test",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Valid status (200 or 400 or 404)\", () => {\r",
+                  "    pm.expect([200, 400, 404]).to.include(pm.response.code);\r",
+                  "});\r",
+                  "\r",
+                  "if (pm.response.code === 200) {\r",
+                  "    pm.test(\"User data returned successfully\", () => {\r",
+                  "        const data = pm.response.json();\r",
+                  "        pm.expect(data).to.be.an(\"array\"); \r",
+                  "    });\r",
+                  "}\r",
+                  "\r",
+                  "if (pm.response.code !== 200) {\r",
+                  "    pm.test(\"Error message exists\", () => {\r",
+                  "        pm.expect(pm.response.json()).to.have.property(\"error\");\r",
+                  "    });\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Players Tests",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", () => {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Player created with correct ID\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data.player.player_id).to.equal(12345);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"player_id\": 12345,\r\n    \"name\": \"LeBron James\",\r\n    \"team_id\": \"1610612747\",\r\n    \"position\": \"Forward\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/players",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "players"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Team&Staff",
+      "item": [
+        {
+          "name": "Get All Teams",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response is an array\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each team has team_id\", () => {\r",
+                  "    const data = pm.response.json();\r",
+                  "    if (data.length > 0) {\r",
+                  "        pm.expect(data[0]).to.have.property(\"team_id\");\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/teams",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "teams"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Coach",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Valid status (200 or 400 or 404)\", () => {\r",
+                  "    pm.expect([200, 400, 404]).to.include(pm.response.code);\r",
+                  "});\r",
+                  "\r",
+                  "if (pm.response.code === 200) {\r",
+                  "    pm.test(\"Coach added successfully\", () => {\r",
+                  "        const data = pm.response.json();\r",
+                  "        pm.expect(data.message).to.include(\"success\");\r",
+                  "    });\r",
+                  "}\r",
+                  "\r",
+                  "if (pm.response.code !== 200) {\r",
+                  "    pm.test(\"Error message exists\", () => {\r",
+                  "        pm.expect(pm.response.json()).to.have.property(\"error\");\r",
+                  "    });\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"adminId\": \"914b05b0-9051-7023-704a-0d48ab089b4c\",\r\n    \"userId\": \"618b75a0-00e1-70cb-e8fd-f0092da17fc4\",\r\n    \"role\": \"Head Coach\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/coaches",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "coaches"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Coaches",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains staff/coaches object\", function () {\r",
+                  "    const data = pm.response.json();\r",
+                  "    // The server returns the 'staff' object directly\r",
+                  "    pm.expect(data).to.be.an(\"object\");\r",
+                  "    \r",
+                  "    // Check if the coach we added earlier (Head Coach) is there\r",
+                  "    if (data[\"Head Coach\"]) {\r",
+                  "        pm.expect(data[\"Head Coach\"]).to.not.be.null;\r",
+                  "        console.log(\"Found Head Coach:\", data[\"Head Coach\"]);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/coaches?adminId=914b05b0-9051-7023-704a-0d48ab089b4c",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "coaches"
+              ],
+              "query": [
+                {
+                  "key": "adminId",
+                  "value": "914b05b0-9051-7023-704a-0d48ab089b4c"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DetailsCheck",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Team details are correct\", function () {\r",
+                  "    const data = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(data).to.be.an(\"object\");\r",
+                  "    \r",
+                  "    pm.expect(data).to.have.property(\"name\");\r",
+                  "    pm.expect(data.name).to.equal(\"New York Knicks\");\r",
+                  "    \r",
+                  "    console.log(\"Team Found:\", data.name);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/teams/1610612752",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "teams",
+                "1610612752"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "GameAnalytics",
+      "item": [
+        {
+          "name": "DeleteCoach",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Coach removed successfully\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.include(\"removed\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/coaches?adminId=914b05b0-9051-7023-704a-0d48ab089b4c&role=Head Coach",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "coaches"
+              ],
+              "query": [
+                {
+                  "key": "adminId",
+                  "value": "914b05b0-9051-7023-704a-0d48ab089b4c",
+                  "type": "text"
+                },
+                {
+                  "key": "role",
+                  "value": "Head Coach",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetTeamIDbyGamelog",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Gamelog returns a list of games\", function () {\r",
+                  "    const data = pm.response.json();\r",
+                  "    pm.expect(data.games).to.be.an(\"array\");\r",
+                  "    \r",
+                  "    if (data.games.length > 0) {\r",
+                  "        pm.expect(data.games[0]).to.have.property(\"gameId\");\r",
+                  "        \r",
+                  "        const firstGame = data.games[0];\r",
+                  "        const dateProperty = firstGame.gameDate || firstGame.GAME_DATE || firstGame.date;\r",
+                  "        \r",
+                  "        pm.expect(dateProperty).to.not.be.undefined;\r",
+                  "        console.log(\"Game ID Found:\", firstGame.gameId);\r",
+                  "    }\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/team-gamelog?teamId=1610612752&limit=5&season=2025-26",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "team-gamelog"
+              ],
+              "query": [
+                {
+                  "key": "teamId",
+                  "value": "1610612752",
+                  "type": "text"
+                },
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "type": "text"
+                },
+                {
+                  "key": "season",
+                  "value": "2025-26",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    }
+  ]
+}

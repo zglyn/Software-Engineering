@@ -6,7 +6,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config();
+require('dotenv').config({ path: '.env.txt' });;
 const { fetchTeamGamelogRecent, fetchCommonPlayerInfo } = require('./services/nba-stats/nbaStatsClient');
 const { runNbaFeedSync, FEED_GAMES_META_ARTICLE_ID } = require('./services/nba-feed/feedSync');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
@@ -689,9 +689,11 @@ app.get('/api/teams/:teamId', async (req, res) => {
     try {
         const command = new GetCommand({
             TableName: 'Teams',
-            Key: { team_id: req.params.teamId }
+            Key: { team_id: Number(req.params.teamId) } 
         });
+        
         const response = await docClient.send(command);
+        
         if (!response.Item) {
             return res.status(404).json({ error: 'Team not found' });
         }
@@ -928,7 +930,9 @@ app.delete('/api/players/:id', async (req, res) => {
         const playerId = req.params.id;
         const command = new DeleteCommand({
             TableName: 'Players',
-            Key: { id: playerId }
+            Key: { 
+                userId: playerId 
+            }
         });
         await docClient.send(command);
         res.status(200).json({ message: `Player ${playerId} deleted successfully.` });
@@ -1138,3 +1142,4 @@ server.on('error', (err) => {
     }
     process.exit(1);
 });
+
