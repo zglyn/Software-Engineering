@@ -7,7 +7,7 @@ const axios = require('axios');
 const { spawn } = require('child_process');
 const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+require('dotenv').config();
 const {
     fetchTeamGamelogRecent,
     fetchCommonPlayerInfo,
