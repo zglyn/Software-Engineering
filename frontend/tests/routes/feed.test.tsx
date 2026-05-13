@@ -15,16 +15,24 @@ vi.mock("react-router", async () => {
   };
 });
 
+function sidebarGamblingLink() {
+  const gambling = screen.getByRole("link", { name: /^Gambling$/i });
+  expect(gambling).toHaveClass("feedSidebarBtn");
+  expect(gambling).toHaveAttribute("href", "/gambler");
+  return gambling;
+}
+
 describe("FeedPage Smoke Test", () => {
   it("renders the feed page without crashing", () => {
-    // Provide a safe return value for useLoaderData
     vi.mocked(reactRouter.useLoaderData).mockReturnValue({
       isAdmin: false,
       isCoach: false,
       userId: "test-user",
       backendBaseUrl: "http://localhost:3001",
-      feedForYou: [], // This ensures items.length is 0, not undefined
+      feedForYou: [],
       coachPlayers: [],
+      adminCoaches: [],
+      adminTeamPlayers: [],
     });
 
     render(
@@ -33,7 +41,52 @@ describe("FeedPage Smoke Test", () => {
       </MemoryRouter>
     );
 
-    // Verify the search bar exists (proving the page rendered)
-    expect(screen.getByPlaceholderText(/Search players, teams.../i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Profile$/i })).toBeInTheDocument();
+    sidebarGamblingLink();
+  });
+
+  it("non-coach has no top tabs; Gambling is in the sidebar", () => {
+    vi.mocked(reactRouter.useLoaderData).mockReturnValue({
+      isAdmin: false,
+      isCoach: false,
+      userId: "test-user",
+      backendBaseUrl: "http://localhost:3001",
+      feedForYou: [],
+      coachPlayers: [],
+      adminCoaches: [],
+      adminTeamPlayers: [],
+    });
+
+    render(
+      <MemoryRouter>
+        <FeedPage />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByRole("button", { name: /^Feed$/i })).not.toBeInTheDocument();
+    sidebarGamblingLink();
+  });
+
+  it("coach sees Team and News tabs; Gambling stays in the sidebar", () => {
+    vi.mocked(reactRouter.useLoaderData).mockReturnValue({
+      isAdmin: false,
+      isCoach: true,
+      userId: "coach-id",
+      backendBaseUrl: "http://localhost:3001",
+      feedForYou: [],
+      coachPlayers: [],
+      adminCoaches: [],
+      adminTeamPlayers: [],
+    });
+
+    render(
+      <MemoryRouter>
+        <FeedPage />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole("button", { name: /^Team$/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^News$/i })).toBeInTheDocument();
+    sidebarGamblingLink();
   });
 });

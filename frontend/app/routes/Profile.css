@@ -42,3 +42,113 @@
   cursor: pointer;
   font-size: small;
 }
+
+.playerProfileHeroDivider {
+  border: none;
+  border-top: 1px solid #2d2d33;
+  margin: 0 24px 8px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profileAboutSection {
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profileAboutLead {
+  margin: 0 0 16px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #9ca3af;
+}
+
+.profileAboutCard {
+  background: linear-gradient(165deg, #1a1a22 0%, #13131a 100%);
+  border: 1px solid #2d2d33;
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  padding: 4px 0;
+  overflow: hidden;
+}
+
+.profileAboutCardInner {
+  padding: 4px 20px 8px;
+}
+
+.profileAboutRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 4px;
+  border-bottom: 1px solid #2a2a31;
+}
+
+.profileAboutRow--last,
+.profileAboutRow:last-child {
+  border-bottom: none;
+}
+
+.profileAboutLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.profileAboutValue {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #f4f4f5;
+  text-align: right;
+}
+
+.profileAccountActions {
+  max-width: 560px;
+  margin: 28px auto 40px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.profileDeleteAccountBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  border: 1px solid #b91c1c;
+  background: #450a0a;
+  color: #fecaca;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.profileDeleteAccountBtn:hover {
+  background: #7f1d1d;
+  border-color: #ef4444;
+  color: #fff;
+}
+
+.profileAccountActionsHint {
+  margin: 10px 0 0;
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+.profileErrorBox {
+  max-width: 560px;
+  margin: 32px auto;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #2d2d33;
+  background: #16161a;
+  color: #fca5a5;
+  text-align: center;
+}

@@ -7,7 +7,7 @@ type OpenSlot = { player_id: string | number; name: string; position?: string };
 export type AddPlayersToTeamDialogProps = {
   open: boolean;
   onClose: () => void;
-  coachId: string;
+  actorId: string;
   backendBaseUrl: string;
   onSuccess: () => void;
 };
@@ -15,7 +15,7 @@ export type AddPlayersToTeamDialogProps = {
 export function AddPlayersToTeamDialog({
   open,
   onClose,
-  coachId,
+  actorId,
   backendBaseUrl,
   onSuccess,
 }: AddPlayersToTeamDialogProps) {
@@ -43,14 +43,13 @@ export function AddPlayersToTeamDialog({
   }, [open]);
 
   useEffect(() => {
-    if (!open || !coachId) return;
+    if (!open || !actorId) return;
     let cancelled = false;
     setLoadingOptions(true);
+    const q = `adminId=${encodeURIComponent(actorId)}`;
     (async () => {
       try {
-        const r = await fetch(
-          `${backendBaseUrl}/api/coach/player-assign/options?coachId=${encodeURIComponent(coachId)}`
-        );
+        const r = await fetch(`${backendBaseUrl}/api/coach/player-assign/options?${q}`);
         const data = (await r.json().catch(() => ({}))) as {
           eligibleUsers?: UserOption[];
           openSlots?: OpenSlot[];
@@ -66,7 +65,7 @@ export function AddPlayersToTeamDialog({
     return () => {
       cancelled = true;
     };
-  }, [open, coachId, backendBaseUrl]);
+  }, [open, actorId, backendBaseUrl]);
 
   const matchedSlot = useMemo(() => {
     if (!selectedUser) return null;
@@ -103,8 +102,8 @@ export function AddPlayersToTeamDialog({
 
   const positionLine =
     matchedSlot &&
-    matchedSlot.position &&
-    String(matchedSlot.position).trim() !== ''
+      matchedSlot.position &&
+      String(matchedSlot.position).trim() !== ''
       ? String(matchedSlot.position).trim()
       : matchedSlot
         ? '—'
@@ -116,14 +115,15 @@ export function AddPlayersToTeamDialog({
     setSubmitting(true);
     setAssignError(undefined);
     try {
+      const body = {
+        adminId: actorId,
+        userId: selectedUser.userId,
+        rosterPlayerId: String(matchedSlot.player_id),
+      };
       const r = await fetch(`${backendBaseUrl}/api/coach/player-assign`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          coachId,
-          userId: selectedUser.userId,
-          rosterPlayerId: String(matchedSlot.player_id),
-        }),
+        body: JSON.stringify(body),
       });
       const data = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (!r.ok || !data.ok) {

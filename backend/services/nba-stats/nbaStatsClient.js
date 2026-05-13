@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const STATS_TEAM_GAMELOG = 'https://stats.nba.com/stats/teamgamelog';
+const STATS_BOXSCORE_TRADITIONAL_V2 = 'https://stats.nba.com/stats/boxscoretraditionalv2';
 const STATS_BOXSCORE_SUMMARY_V2 = 'https://stats.nba.com/stats/boxscoresummaryv2';
 const STATS_COMMON_PLAYER_INFO = 'https://stats.nba.com/stats/commonplayerinfo';
 const NBA_CDN_BOXSCORE = 'https://cdn.nba.com/static/json/liveData/boxscore';
@@ -241,29 +242,74 @@ async function fetchLeagueTeamStats(options = {}) {
 }
 
 async function fetchTwoTeamScoresFromLiveBoxscore(gameId) {
-  const url = `${NBA_CDN_BOXSCORE}/boxscore_${String(gameId)}.json`;
-  const r = await axios.get(url, cdnBoxscoreAxiosOpts);
+  try {
+    const url = `${NBA_CDN_BOXSCORE}/boxscore_${String(gameId)}.json`;
+    const r = await axios.get(url, cdnBoxscoreAxiosOpts);
 
-  const game = r.data?.game;
-  const h = game?.homeTeam;
-  const a = game?.awayTeam;
+    const game = r.data?.game;
+    const h = game?.homeTeam;
+    const a = game?.awayTeam;
 
-  if (!h || !a) return null;
+    if (!h || !a) return null;
 
-  const hId = h.teamId;
-  const aId = a.teamId;
+    const hId = h.teamId;
+    const aId = a.teamId;
 
-  if (hId == null || aId == null) return null;
+    if (hId == null || aId == null) return null;
 
-  const hScore = h.score === '' || h.score == null ? null : Number(h.score);
-  const aScore = a.score === '' || a.score == null ? null : Number(a.score);
+    const hScore = h.score === '' || h.score == null ? null : Number(h.score);
+    const aScore = a.score === '' || a.score == null ? null : Number(a.score);
 
-  if (!Number.isFinite(hScore) || !Number.isFinite(aScore)) return null;
+    if (!Number.isFinite(hScore) || !Number.isFinite(aScore)) return null;
 
-  return [
-    { teamId: hId, pts: hScore },
-    { teamId: aId, pts: aScore },
-  ];
+    return [
+      { teamId: hId, pts: hScore },
+      { teamId: aId, pts: aScore },
+    ];
+  } catch (_) {
+    return null;
+  }
+}
+
+async function fetchTwoTeamScoresFromBoxscoreTraditionalV2(gameId) {
+  const params = new URLSearchParams({
+    GameID: String(gameId),
+    StartPeriod: '0',
+    EndPeriod: '10',
+    StartRange: '0',
+    EndRange: '0',
+    RangeType: '0',
+  });
+
+  const url = `${STATS_BOXSCORE_TRADITIONAL_V2}?${params.toString()}`;
+  const r = await axios.get(url, statsAxiosOpts);
+
+  const sets = r.data?.resultSets;
+  if (!Array.isArray(sets)) return null;
+
+  const ts = sets.find((s) => String(s?.name || '') === 'TeamStats');
+  const headers = ts?.headers;
+  const rows = ts?.rowSet;
+
+  if (!Array.isArray(headers) || !Array.isArray(rows) || rows.length < 2) return null;
+
+  const norm = (x) => String(x ?? '').trim().toUpperCase();
+
+  const iTeamId = headers.findIndex((h) => norm(h) === 'TEAM_ID');
+  const iPts = headers.findIndex((h) => norm(h) === 'PTS');
+
+  if (iTeamId < 0 || iPts < 0) return null;
+
+  const out = rows
+    .map((row) => ({ teamId: row[iTeamId], pts: row[iPts] }))
+    .filter((x) => x.teamId != null && x.pts != null && Number.isFinite(Number(x.pts)));
+
+  if (out.length < 2) return null;
+
+  return out.map((x) => ({
+    teamId: x.teamId,
+    pts: Number(x.pts),
+  }));
 }
 
 async function fetchTwoTeamScoresFromBoxscoreSummaryV2(gameId) {
@@ -306,6 +352,10 @@ async function fetchTwoTeamScoresFromBoxscoreSummaryV2(gameId) {
 async function fetchOpponentPointsForGame(gameId, teamId) {
   try {
     let line = await fetchTwoTeamScoresFromLiveBoxscore(gameId);
+
+    if (!line) {
+      line = await fetchTwoTeamScoresFromBoxscoreTraditionalV2(gameId);
+    }
 
     if (!line) {
       line = await fetchTwoTeamScoresFromBoxscoreSummaryV2(gameId);
@@ -388,25 +438,17 @@ async function fetchCommonPlayerInfo(playerId) {
   };
 }
 
-async function fetchTeamGamelogRecent(teamId, options = {}) {
-  const lim = Number.isFinite(Number(options?.limit))
-    ? Math.max(1, Math.min(20, Math.floor(Number(options.limit))))
-    : 5;
+function nbaGameDateToMs(gameDate) {
+  if (gameDate == null || gameDate === '') return NaN;
+  const t = Date.parse(String(gameDate).trim());
+  return Number.isFinite(t) ? t : NaN;
+}
 
-  const Season =
-    typeof options?.season === 'string' && options.season.trim()
-      ? options.season.trim()
-      : process.env.NBA_SEASON || inferSeasonFromNowEt() || '2025-26';
-
-  const SeasonType =
-    typeof options?.seasonType === 'string' && options.seasonType.trim()
-      ? options.seasonType.trim()
-      : process.env.NBA_SEASON_TYPE || 'Regular Season';
-
+async function fetchTeamGamelogForSeasonType(teamId, season, seasonType) {
   const params = new URLSearchParams({
     TeamID: String(teamId),
-    Season,
-    SeasonType,
+    Season: season,
+    SeasonType: seasonType,
     LeagueID: '00',
   });
 
@@ -428,13 +470,58 @@ async function fetchTeamGamelogRecent(teamId, options = {}) {
   const iWl = indexOf('WL');
   const iPts = indexOf('PTS');
 
-  const baseRows = rows.slice(0, lim).map((row) => ({
+  return rows.map((row) => ({
     gameId: iGameId >= 0 ? row[iGameId] ?? null : null,
     gameDate: iGameDate >= 0 ? row[iGameDate] ?? null : null,
     matchup: iMatchup >= 0 ? row[iMatchup] ?? null : null,
     wl: iWl >= 0 ? row[iWl] ?? null : null,
     scored: iPts >= 0 ? row[iPts] ?? null : null,
   }));
+}
+
+async function fetchTeamGamelogRecent(teamId, options = {}) {
+  const lim = Number.isFinite(Number(options?.limit))
+    ? Math.max(1, Math.min(20, Math.floor(Number(options.limit))))
+    : 5;
+
+  const Season =
+    typeof options?.season === 'string' && options.season.trim()
+      ? options.season.trim()
+      : process.env.NBA_SEASON || inferSeasonFromNowEt() || '2025-26';
+
+  const fromQuery =
+    typeof options?.seasonType === 'string' ? options.seasonType.trim() : '';
+  const fromEnv =
+    typeof process.env.NBA_SEASON_TYPE === 'string' ? process.env.NBA_SEASON_TYPE.trim() : '';
+  const explicitSeasonType = fromQuery || fromEnv || null;
+
+  let baseRows;
+
+  if (explicitSeasonType) {
+    const rows = await fetchTeamGamelogForSeasonType(teamId, Season, explicitSeasonType);
+    baseRows = rows.slice(0, lim);
+  } else {
+    const [regularRows, playoffRows] = await Promise.all([
+      fetchTeamGamelogForSeasonType(teamId, Season, 'Regular Season'),
+      fetchTeamGamelogForSeasonType(teamId, Season, 'Playoffs').catch(() => []),
+    ]);
+
+    const byGameId = new Map();
+    for (const g of [...regularRows, ...playoffRows]) {
+      if (g.gameId == null || g.gameId === '') continue;
+      byGameId.set(String(g.gameId), g);
+    }
+
+    const merged = Array.from(byGameId.values());
+    merged.sort((a, b) => {
+      const ta = nbaGameDateToMs(a.gameDate);
+      const tb = nbaGameDateToMs(b.gameDate);
+      if (Number.isFinite(ta) && Number.isFinite(tb) && ta !== tb) return tb - ta;
+      return String(b.gameId).localeCompare(String(a.gameId));
+    });
+
+    baseRows = merged.slice(0, lim);
+  }
 
   const out = [];
 

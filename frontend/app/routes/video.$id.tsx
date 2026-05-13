@@ -208,7 +208,6 @@ export default function VideoPage() {
             <div className="videoThumbPlaceholder" aria-hidden>No thumbnail</div>
           )}
         </div>
-        {video.message && <p className="videoPageUserMessage">{video.message}</p>}
         {!analysis && (
           <p className="videoPageNoStats">Stats not yet generated, please check again soon!</p>
         )}

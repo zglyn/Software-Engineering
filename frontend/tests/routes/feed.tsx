@@ -501,9 +501,7 @@ const FeedPage: React.FC = () => {
   return (
     <div className="feedPageWrapper">
       <header className="feedPageHeader">
-        <div className="feedHeaderCenter">
-          <input type="search" placeholder="Search players, teams..." className="feedSearch" aria-label="Search" />
-        </div>
+        <div className="feedHeaderCenter" aria-hidden />
         <div className="feedProfileWrap" ref={profileDropdownRef}>
           <button type="button" className="feedProfileBtn" aria-label="Profile" aria-expanded={profileDropdownOpen} onClick={() => setProfileDropdownOpen(open => !open)}>
             <svg className="feedProfileIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>

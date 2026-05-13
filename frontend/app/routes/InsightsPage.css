@@ -109,6 +109,13 @@
   padding-bottom: 12px;
 }
 
+.insightsChartHint {
+  margin: 0 0 16px;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: #9ca3af;
+}
+
 .insightsRecordBlock {
   text-align: center;
   padding: 20px 0;

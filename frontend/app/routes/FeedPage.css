@@ -20,7 +20,9 @@
   flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
   min-width: 0;
+  min-height: 42px;
   padding-left: 12px;
 }
 
@@ -140,6 +142,7 @@
     margin-left: auto;
     margin-right: auto;
   }
+
   .feedSidebar {
     position: static;
     transform: none;
@@ -149,30 +152,11 @@
     padding: 12px 0;
     justify-content: center;
   }
+
   .feedPage {
     padding-left: 0;
     padding-right: 0;
   }
-}
-
-.feedSearch {
-  width: 100%;
-  max-width: 320px;
-  padding: 10px 16px;
-  border-radius: 20px;
-  border: 1px solid #2d2d33;
-  background: #1e1e24;
-  color: #f4f4f5;
-  font-size: 0.9rem;
-  outline: none;
-}
-
-.feedSearch::placeholder {
-  color: #6b6b72;
-}
-
-.feedSearch:focus {
-  border-color: #6366f1;
 }
 
 .feedProfileBtn {
@@ -267,6 +251,144 @@
 .feedCard:hover {
   border-color: #3d3d45;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.feedPersonalNote {
+  margin-top: 4px;
+}
+
+.feedPersonalNoteBody {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.feedPersonalNoteReadMore {
+  color: #9ca3af;
+  font-weight: 500;
+  font-size: 0.9em;
+  cursor: inherit;
+}
+
+button.feedCardNoteOpen {
+  font: inherit;
+  text-align: inherit;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.feedCardNoteOpen:hover .feedCard {
+  border-color: #6366f1;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.15);
+}
+
+.feedNoteDialogBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  box-sizing: border-box;
+}
+
+.feedNoteDialog {
+  background: #1e1e24;
+  border: 1px solid #2d2d33;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 720px;
+  padding: 18px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  max-height: min(86vh, 620px);
+  max-height: min(86dvh, calc(100svh - 32px));
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.feedNoteDialogHeader {
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+.feedNoteDialogTitle {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.feedNoteDialogFrom {
+  margin-bottom: 6px;
+  color: #e5e5eb;
+}
+
+.feedNoteDialogLabel {
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.feedNoteDialogSender {
+  font-weight: 600;
+}
+
+.feedNoteDialogDate {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-bottom: 0;
+}
+
+.feedNoteDialogBodyScroll {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: min(55vh, 480px);
+  max-height: min(58dvh, calc(100svh - 200px));
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  border-radius: 6px;
+  border: 1px solid #2a2a32;
+  padding: 10px 12px;
+  background: #18181c;
+}
+
+.feedNoteDialogBody {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+  margin: 0;
+  color: #dcdce2;
+}
+
+.feedNoteDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+.feedNoteDialogCloseBtn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: 1px solid #4f46e5;
+  background: #4f46e5;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.feedNoteDialogCloseBtn:hover {
+  background: #6366f1;
+  border-color: #6366f1;
 }
 
 .feedCardHeader {
@@ -475,16 +597,36 @@ a.feedSummary:hover {
 }
 
 .feedScoreLine {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: 10px;
+  column-gap: 10px;
   margin-bottom: 4px;
   font-size: 0.95rem;
   color: #e4e4e7;
 }
 
-.feedScoreLine strong {
+.feedScoreTeam {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feedScoreTeam--away {
+  justify-self: start;
+  text-align: left;
+}
+
+.feedScoreTeam--home {
+  justify-self: end;
+  text-align: right;
+}
+
+.feedScoreCenter {
+  justify-self: center;
+  text-align: center;
   color: #fff;
   font-size: 1.05rem;
 }
@@ -553,7 +695,7 @@ a.feedSummary:hover {
   margin-bottom: 8px;
 }
 
-.feedUpcoming > div:first-child {
+.feedUpcoming>div:first-child {
   color: #e4e4e7;
 }
 
@@ -682,4 +824,80 @@ a.feedSummary:hover {
 .feedDialogBody .manageCoachesDropdown,
 .feedDialogBody .manageCoachesDropdownEmpty {
   z-index: 20;
+}
+
+.adminTeamSectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f4f4f5;
+  margin: 22px 0 6px;
+  padding: 0 12px;
+}
+
+.adminTeamSectionTitle:first-of-type {
+  margin-top: 20px;
+  padding-top: 10px;
+}
+
+.adminTeamSectionDivider {
+  border: none;
+  border-bottom: 1px solid #2d2d33;
+  margin: 0 12px 10px;
+}
+
+.adminTeamEmpty {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  padding: 0 12px 16px;
+  margin: 0;
+}
+
+.adminCoachesGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  padding: 0 12px 8px;
+}
+
+.adminCoachCard {
+  background: #1e1e24;
+  border: 1px solid #2d2d33;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.adminCoachCard--readOnly {
+  min-height: 0;
+}
+
+a.adminCoachCardNavLink {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.12s ease;
+}
+
+a.adminCoachCardNavLink:hover {
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+}
+
+.adminCoachCardBody {
+  flex: 1;
+}
+
+.adminCoachName {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #f4f4f5;
+  line-height: 1.25;
+}
+
+.adminCoachRole {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin-top: 6px;
 }

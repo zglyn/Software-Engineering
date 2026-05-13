@@ -116,8 +116,7 @@
   color: #6b6b72;
 }
 
-.uploadInput,
-.uploadTextarea {
+.uploadInput {
   background: #0f0f12;
   border: 1px solid #2d2d35;
   border-radius: 8px;
@@ -126,14 +125,8 @@
   font-size: 0.9rem;
 }
 
-.uploadInput::placeholder,
-.uploadTextarea::placeholder {
+.uploadInput::placeholder {
   color: #6b6b72;
-}
-
-.uploadTextarea {
-  resize: vertical;
-  min-height: 60px;
 }
 
 .uploadProgressWrap {

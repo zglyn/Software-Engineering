@@ -49,7 +49,6 @@ export default function UploadModal({ open, onClose, onUploadComplete, userId, b
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
   const titleMaxLen = userId ? Math.max(1, 255 - userId.length) : 255;
-  const [message, setMessage] = useState('');
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,7 +56,6 @@ export default function UploadModal({ open, onClose, onUploadComplete, userId, b
   const reset = () => {
     setFile(null);
     setTitle('');
-    setMessage('');
     setProgress(0);
     setUploading(false);
   };
@@ -146,16 +144,6 @@ export default function UploadModal({ open, onClose, onUploadComplete, userId, b
               disabled={uploading}
             />
             <span className="uploadTitleHint">{title.length}/{titleMaxLen} characters max</span>
-          </label>
-          <label className="uploadLabel">
-            Message
-            <textarea
-              className="uploadTextarea"
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              rows={2}
-              disabled={uploading}
-            />
           </label>
           {uploading && (
             <div className="uploadProgressWrap">

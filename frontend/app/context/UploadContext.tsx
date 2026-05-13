@@ -32,7 +32,6 @@ export interface AnalysisResult {
 export interface VideoRecord {
   id: string;
   title: string;
-  message?: string;
   thumbnailUrl?: string;
   status: VideoStatus;
   createdAt: number;

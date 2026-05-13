@@ -30,6 +30,10 @@ describe("PlayerStatsPage", () => {
       userName: "John Doe",
       backendBaseUrl: "http://localhost:8080",
       isCoach: false,
+      isAdmin: false,
+      canViewNotes: false,
+      canWriteNotes: false,
+      assignedUserId: undefined,
       notesRecipientId: "coach-456",
     };
 

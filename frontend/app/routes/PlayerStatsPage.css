@@ -495,3 +495,71 @@
   font-weight: 600;
   color: #e4e4e7;
 }
+
+.playerProfileSection--adminActions {
+  padding-top: 8px;
+}
+
+.playerProfileRemoveTeamBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid #b91c1c;
+  background: #991b1b;
+  color: #fef2f2;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.playerProfileRemoveTeamBtn:hover:not(:disabled) {
+  background: #b91c1c;
+  border-color: #dc2626;
+}
+
+.playerProfileRemoveTeamBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.playerProfileHeroInner--coachOnly {
+  justify-content: center;
+  text-align: center;
+}
+
+.playerProfileHeroInner--coachOnly .playerProfileHeroText {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.notesStandalonePage {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 8px 20px 48px;
+  box-sizing: border-box;
+}
+
+.notesStandaloneTitle {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f4f4f5;
+}
+
+.notesStandaloneComposer {
+  margin-bottom: 24px;
+}
+
+.notesStandaloneItemTitle {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #e4e4e7;
+}
+
+.notesStandaloneItem .managePlayersNoteItemTop {
+  margin-top: 0;
+}

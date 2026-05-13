@@ -72,6 +72,11 @@ type Pages = {
       "id": string;
     };
   };
+  "/coach/:coachUserId": {
+    params: {
+      "coachUserId": string;
+    };
+  };
   "/team/:id": {
     params: {
       "id": string;
@@ -96,7 +101,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/auth/callback" | "/auth/logout" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/gambler" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile" | "/*";
+    page: "/" | "/login" | "/auth/callback" | "/auth/logout" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/gambler" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/coach/:coachUserId" | "/team/:id" | "/create-team" | "/insights" | "/profile" | "/*";
   };
   "routes/login/index.tsx": {
     id: "routes/login/index";
@@ -112,7 +117,7 @@ type RouteFiles = {
   };
   "layouts/protected-layout.tsx": {
     id: "layouts/protected-layout";
-    page: "/" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/gambler" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile";
+    page: "/" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/gambler" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/coach/:coachUserId" | "/team/:id" | "/create-team" | "/insights" | "/profile";
   };
   "routes/root-redirect.ts": {
     id: "routes/root-redirect";
@@ -178,6 +183,10 @@ type RouteFiles = {
     id: "routes/player.$id";
     page: "/player/:id";
   };
+  "routes/coach.$coachUserId.tsx": {
+    id: "routes/coach.$coachUserId";
+    page: "/coach/:coachUserId";
+  };
   "routes/team.$id.tsx": {
     id: "routes/team.$id";
     page: "/team/:id";
@@ -222,6 +231,7 @@ type RouteModules = {
   "routes/uploads": typeof import("./app/routes/uploads.tsx");
   "routes/video.$id": typeof import("./app/routes/video.$id.tsx");
   "routes/player.$id": typeof import("./app/routes/player.$id.tsx");
+  "routes/coach.$coachUserId": typeof import("./app/routes/coach.$coachUserId.tsx");
   "routes/team.$id": typeof import("./app/routes/team.$id.tsx");
   "routes/create-team": typeof import("./app/routes/create-team.tsx");
   "routes/insights": typeof import("./app/routes/insights.tsx");

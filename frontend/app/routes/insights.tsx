@@ -91,7 +91,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         const data = (await r.json()) as { teamId?: number | string };
         if (data.teamId != null && data.teamId !== '') defaultTeamId = String(data.teamId);
       }
-    } catch {}
+    } catch { }
   }
 
   return { teams, defaultTeamId, backendBaseUrl: base };
@@ -195,9 +195,9 @@ const InsightsPage: React.FC = () => {
       <div className="insightsContainer">
         <div className="insightsControls">
           <label className="insightsLabel">Select Team to Analyze</label>
-          <select 
-            className="insightsSelect" 
-            value={selectedTeamId} 
+          <select
+            className="insightsSelect"
+            value={selectedTeamId}
             onChange={e => setSelectedTeamId(e.target.value)}
           >
             {teams.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
@@ -208,7 +208,7 @@ const InsightsPage: React.FC = () => {
           <div className="insightsGrid">
             <div className="insightsCard">
               <h2 className="insightsCardTitle">Season Overview</h2>
-              
+
               <div className="insightsRecordBlock">
                 <span className="insightsRecordValue">{record}</span>
                 <span className="insightsRecordLabel">Current Win/Loss Record</span>

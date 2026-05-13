@@ -26,6 +26,7 @@ export default [
     route("uploads", "routes/uploads.tsx"),
     route("video/:id", "routes/video.$id.tsx"),
     route("player/:id", "routes/player.$id.tsx"),
+    route("coach/:coachUserId", "routes/coach.$coachUserId.tsx"),
     route("team/:id", "routes/team.$id.tsx"),
     route("create-team", "routes/create-team.tsx"),
     route("insights", "routes/insights.tsx"),

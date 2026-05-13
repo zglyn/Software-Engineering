@@ -109,7 +109,7 @@
   cursor: pointer;
   border: none;
   transition: background 0.2s ease;
-  height: 42px; /* matches input height */
+  height: 42px;
 }
 
 .manageCoachesBtnPrimary:hover:not(:disabled) {
