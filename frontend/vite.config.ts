@@ -19,7 +19,9 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: "jsdom",
       globals: true,
-      setupFiles: "./tests/setup.ts", // <--- ADD THIS LINE
+      setupFiles: "./tests/setup.ts",
+      // ADDED THIS LINE: Tells Vitest to ignore standard build folders and Playwright's .spec.ts files
+      exclude: ["node_modules", "dist", "tests/*.spec.ts"], 
     },
     define: {
       "process.env.COGNITO_CLIENT_ID": JSON.stringify(env.COGNITO_CLIENT_ID),

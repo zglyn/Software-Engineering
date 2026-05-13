@@ -7,7 +7,7 @@ description: |-
   backend to AWS DynamoDB.
 variables:
   - key: baseUrl
-    value: 'http://localhost:5000/api'
+    value: 'http://localhost:3001/api'
     description: The base URL for the local Express dev server.
   - key: currentUserId
     value: ''
