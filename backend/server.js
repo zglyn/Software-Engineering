@@ -907,76 +907,8 @@ function runPythonNbaApiGambler({ season, seasonType, limit }) {
     return new Promise((resolve, reject) => {
         const pythonPath =
             process.env.NBA_API_PYTHON ||
-            path.join(__dirname, '.venv', 'bin', 'python');
-
-        const scriptPath = path.join(__dirname, 'scripts', 'nba_api_gambler.py');
-
-        const proc = spawn(
-            pythonPath,
-            [scriptPath, season, seasonType, String(limit)],
-            {
-                stdio: ['ignore', 'pipe', 'pipe'],
-            }
-        );
-
-        let stdout = '';
-        let stderr = '';
-
-        const timer = setTimeout(() => {
-            try {
-                proc.kill('SIGKILL');
-            } catch (_) {}
-        }, 90000);
-
-        proc.stdout.on('data', (data) => {
-            stdout += data.toString('utf8');
-        });
-
-        proc.stderr.on('data', (data) => {
-            stderr += data.toString('utf8');
-        });
-
-        proc.on('error', (error) => {
-            clearTimeout(timer);
-            reject(error);
-        });
-
-        proc.on('close', (code) => {
-            clearTimeout(timer);
-
-            let parsed = null;
-
-            try {
-                parsed = JSON.parse(stdout.trim());
-            } catch (error) {
-                reject(
-                    new Error(
-                        `nba_api python returned invalid JSON. code=${code}. stderr=${stderr}. stdout=${stdout}`
-                    )
-                );
-                return;
-            }
-
-            if (code !== 0) {
-                reject(
-                    new Error(
-                        parsed?.error ||
-                            `nba_api python failed. code=${code}. stderr=${stderr}`
-                    )
-                );
-                return;
-            }
-
-            resolve(parsed);
-        });
-    });
-}
-
-function runPythonNbaApiGambler({ season, seasonType, limit }) {
-    return new Promise((resolve, reject) => {
-        const pythonPath =
-            process.env.NBA_API_PYTHON ||
-            path.join(__dirname, '.venv', 'bin', 'python');
+            process.env.PYTHON_BIN ||
+            'python3';
 
         const scriptPath = path.join(__dirname, 'scripts', 'nba_api_gambler.py');
 
