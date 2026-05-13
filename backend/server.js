@@ -3,11 +3,18 @@ const cors = require('cors');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const axios = require('axios');
 const { spawn } = require('child_process');
 const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config({ path: '.env.txt' });;
-const { fetchTeamGamelogRecent, fetchCommonPlayerInfo } = require('./services/nba-stats/nbaStatsClient');
+require('dotenv').config();
+const {
+    fetchTeamGamelogRecent,
+    fetchCommonPlayerInfo,
+    fetchFutureScheduleGames,
+    fetchLeagueTeamStats,
+    inferSeasonFromNowEt,
+} = require('./services/nba-stats/nbaStatsClient');
 const { runNbaFeedSync, FEED_GAMES_META_ARTICLE_ID } = require('./services/nba-feed/feedSync');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, ScanCommand, PutCommand, DeleteCommand, GetCommand, UpdateCommand } = require('@aws-sdk/lib-dynamodb');
@@ -896,6 +903,485 @@ app.get('/api/players', async (req, res) => {
     }
 });
 
+function runPythonNbaApiGambler({ season, seasonType, limit }) {
+    return new Promise((resolve, reject) => {
+        const pythonPath =
+            process.env.NBA_API_PYTHON ||
+            path.join(__dirname, '.venv', 'bin', 'python');
+
+        const scriptPath = path.join(__dirname, 'scripts', 'nba_api_gambler.py');
+
+        const proc = spawn(
+            pythonPath,
+            [scriptPath, season, seasonType, String(limit)],
+            {
+                stdio: ['ignore', 'pipe', 'pipe'],
+            }
+        );
+
+        let stdout = '';
+        let stderr = '';
+
+        const timer = setTimeout(() => {
+            try {
+                proc.kill('SIGKILL');
+            } catch (_) {}
+        }, 90000);
+
+        proc.stdout.on('data', (data) => {
+            stdout += data.toString('utf8');
+        });
+
+        proc.stderr.on('data', (data) => {
+            stderr += data.toString('utf8');
+        });
+
+        proc.on('error', (error) => {
+            clearTimeout(timer);
+            reject(error);
+        });
+
+        proc.on('close', (code) => {
+            clearTimeout(timer);
+
+            let parsed = null;
+
+            try {
+                parsed = JSON.parse(stdout.trim());
+            } catch (error) {
+                reject(
+                    new Error(
+                        `nba_api python returned invalid JSON. code=${code}. stderr=${stderr}. stdout=${stdout}`
+                    )
+                );
+                return;
+            }
+
+            if (code !== 0) {
+                reject(
+                    new Error(
+                        parsed?.error ||
+                            `nba_api python failed. code=${code}. stderr=${stderr}`
+                    )
+                );
+                return;
+            }
+
+            resolve(parsed);
+        });
+    });
+}
+
+function runPythonNbaApiGambler({ season, seasonType, limit }) {
+    return new Promise((resolve, reject) => {
+        const pythonPath =
+            process.env.NBA_API_PYTHON ||
+            path.join(__dirname, '.venv', 'bin', 'python');
+
+        const scriptPath = path.join(__dirname, 'scripts', 'nba_api_gambler.py');
+
+        const proc = spawn(
+            pythonPath,
+            [scriptPath, season, seasonType, String(limit)],
+            {
+                stdio: ['ignore', 'pipe', 'pipe'],
+            }
+        );
+
+        let stdout = '';
+        let stderr = '';
+
+        const timer = setTimeout(() => {
+            try {
+                proc.kill('SIGKILL');
+            } catch (_) {}
+        }, 90000);
+
+        proc.stdout.on('data', (data) => {
+            stdout += data.toString('utf8');
+        });
+
+        proc.stderr.on('data', (data) => {
+            stderr += data.toString('utf8');
+        });
+
+        proc.on('error', (error) => {
+            clearTimeout(timer);
+            reject(error);
+        });
+
+        proc.on('close', (code) => {
+            clearTimeout(timer);
+
+            let parsed = null;
+
+            try {
+                parsed = JSON.parse(stdout.trim());
+            } catch (error) {
+                reject(
+                    new Error(
+                        `nba_api python returned invalid JSON. code=${code}. stderr=${stderr}. stdout=${stdout}`
+                    )
+                );
+                return;
+            }
+
+            if (code !== 0) {
+                reject(
+                    new Error(
+                        parsed?.error ||
+                            `nba_api python failed. code=${code}. stderr=${stderr}`
+                    )
+                );
+                return;
+            }
+
+            resolve(parsed);
+        });
+    });
+}
+
+const ODDS_API_BASE = 'https://api.the-odds-api.com/v4';
+
+function normalizeTeamNameForOdds(name) {
+    return String(name || '')
+        .toLowerCase()
+        .replace(/\./g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function americanOddsToImpliedProbability(odds) {
+    const n = Number(String(odds).replace('+', ''));
+    if (!Number.isFinite(n) || n === 0) return null;
+
+    if (n > 0) {
+        return 100 / (n + 100);
+    }
+
+    return Math.abs(n) / (Math.abs(n) + 100);
+}
+
+function findBookmaker(bookmakers, preferredKey) {
+    if (!Array.isArray(bookmakers) || bookmakers.length === 0) return null;
+
+    if (preferredKey) {
+        const preferred = bookmakers.find(
+            (b) => String(b.key || '').toLowerCase() === String(preferredKey).toLowerCase()
+        );
+        if (preferred) return preferred;
+    }
+
+    return bookmakers[0];
+}
+
+function findMarket(bookmaker, marketKey) {
+    const markets = bookmaker?.markets;
+    if (!Array.isArray(markets)) return null;
+    return markets.find((m) => String(m.key) === String(marketKey)) || null;
+}
+
+function findOutcomeByTeam(market, teamName) {
+    const want = normalizeTeamNameForOdds(teamName);
+    const outcomes = market?.outcomes;
+    if (!Array.isArray(outcomes)) return null;
+
+    return outcomes.find((o) => normalizeTeamNameForOdds(o.name) === want) || null;
+}
+
+function matchOddsGame(oddsGames, homeTeam, awayTeam) {
+    const h = normalizeTeamNameForOdds(homeTeam);
+    const a = normalizeTeamNameForOdds(awayTeam);
+
+    return (oddsGames || []).find((g) => {
+        const gh = normalizeTeamNameForOdds(g.home_team);
+        const ga = normalizeTeamNameForOdds(g.away_team);
+        return gh === h && ga === a;
+    }) || null;
+}
+
+async function fetchNbaSportsbookOdds() {
+    const apiKey = process.env.ODDS_API_KEY;
+
+    if (!apiKey) {
+        return {
+            games: [],
+            warning: 'ODDS_API_KEY missing',
+        };
+    }
+
+    const regions = process.env.ODDS_API_REGION || 'us';
+    const markets = process.env.ODDS_API_MARKETS || 'h2h,spreads,totals';
+
+    const url = `${ODDS_API_BASE}/sports/basketball_nba/odds`;
+
+    const response = await axios.get(url, {
+        timeout: 20000,
+        params: {
+            apiKey,
+            regions,
+            markets,
+            oddsFormat: 'american',
+        },
+    });
+
+    return {
+        games: Array.isArray(response.data) ? response.data : [],
+        warning: null,
+        requestsRemaining: response.headers['x-requests-remaining'],
+        requestsUsed: response.headers['x-requests-used'],
+    };
+}
+
+function formatOutcome(outcome) {
+    if (!outcome) return null;
+
+    return {
+        name: outcome.name || '',
+        price: outcome.price != null ? outcome.price : null,
+        point: outcome.point != null ? outcome.point : null,
+    };
+}
+
+function attachRealOddsToPick({ pick, oddsGame }) {
+    if (!oddsGame) {
+        return {
+            ...pick,
+            oddsSource: 'model',
+            sportsbookKey: null,
+            impliedProbability: null,
+            oddsLastUpdate: null,
+            oddsWarning: 'No matching sportsbook game found',
+            moneyline: null,
+            spread: null,
+            total: null,
+        };
+    }
+
+    const preferredBook = process.env.ODDS_API_BOOKMAKER || 'draftkings';
+    const bookmaker = findBookmaker(oddsGame.bookmakers, preferredBook);
+
+    if (!bookmaker) {
+        return {
+            ...pick,
+            oddsSource: 'model',
+            sportsbookKey: null,
+            impliedProbability: null,
+            oddsLastUpdate: null,
+            oddsWarning: 'No bookmaker odds available',
+            moneyline: null,
+            spread: null,
+            total: null,
+        };
+    }
+
+    const h2hMarket = findMarket(bookmaker, 'h2h');
+    const spreadMarket = findMarket(bookmaker, 'spreads');
+    const totalMarket = findMarket(bookmaker, 'totals');
+
+    const homeMoneyline = findOutcomeByTeam(h2hMarket, pick.homeTeam);
+    const awayMoneyline = findOutcomeByTeam(h2hMarket, pick.awayTeam);
+
+    const homeSpread = findOutcomeByTeam(spreadMarket, pick.homeTeam);
+    const awaySpread = findOutcomeByTeam(spreadMarket, pick.awayTeam);
+
+    const overOutcome =
+        Array.isArray(totalMarket?.outcomes)
+            ? totalMarket.outcomes.find((o) => String(o.name).toLowerCase() === 'over')
+            : null;
+
+    const underOutcome =
+        Array.isArray(totalMarket?.outcomes)
+            ? totalMarket.outcomes.find((o) => String(o.name).toLowerCase() === 'under')
+            : null;
+
+    const selectedOutcome = findOutcomeByTeam(h2hMarket, pick.selectedTeam);
+    const selectedOdds = selectedOutcome?.price;
+
+    const implied = selectedOdds != null ? americanOddsToImpliedProbability(selectedOdds) : null;
+    const modelProb = Number(pick.confidence) / 100;
+
+    const edge =
+        implied != null && Number.isFinite(modelProb)
+            ? `${(modelProb - implied) * 100 >= 0 ? '+' : ''}${((modelProb - implied) * 100).toFixed(1)}%`
+            : pick.edge;
+
+    return {
+        ...pick,
+
+        odds: selectedOdds != null ? String(selectedOdds) : pick.odds,
+        edge,
+
+        oddsSource: bookmaker.title || bookmaker.key || 'sportsbook',
+        sportsbookKey: bookmaker.key || null,
+        impliedProbability: implied != null ? Number((implied * 100).toFixed(1)) : null,
+        oddsLastUpdate: bookmaker.last_update || null,
+        oddsWarning: selectedOdds == null ? 'Moneyline odds missing for selected team' : null,
+
+        moneyline: {
+            home: formatOutcome(homeMoneyline),
+            away: formatOutcome(awayMoneyline),
+        },
+
+        spread: {
+            home: formatOutcome(homeSpread),
+            away: formatOutcome(awaySpread),
+        },
+
+        total: {
+            over: formatOutcome(overOutcome),
+            under: formatOutcome(underOutcome),
+        },
+    };
+}
+
+
+app.get('/api/gambler/picks', async (req, res) => {
+    try {
+        const season = String(
+            req.query.season ||
+                process.env.NBA_SEASON ||
+                inferSeasonFromNowEt() ||
+                '2025-26'
+        );
+
+        const seasonType = String(
+            req.query.seasonType ||
+                process.env.NBA_SEASON_TYPE ||
+                'Regular Season'
+        );
+
+        const limit = Number.isFinite(Number(req.query.limit))
+            ? Math.max(1, Math.min(200, Math.floor(Number(req.query.limit))))
+            : 100;
+
+        const [nbaApiResult, oddsResult] = await Promise.all([
+            runPythonNbaApiGambler({
+                season,
+                seasonType,
+                limit,
+            }),
+            fetchNbaSportsbookOdds().catch((error) => ({
+                games: [],
+                warning: `sportsbook odds failed: ${error.message || String(error)}`,
+                requestsRemaining: null,
+                requestsUsed: null,
+            })),
+        ]);
+
+        const basePicks = Array.isArray(nbaApiResult?.picks) ? nbaApiResult.picks : [];
+
+        const picksWithOdds = basePicks.map((pick) => {
+            const oddsGame = matchOddsGame(oddsResult.games, pick.homeTeam, pick.awayTeam);
+
+            return attachRealOddsToPick({
+                pick,
+                oddsGame,
+            });
+        });
+
+        const warnings = [
+            ...(Array.isArray(nbaApiResult?.warnings) ? nbaApiResult.warnings : []),
+            ...(oddsResult.warning ? [oddsResult.warning] : []),
+        ].filter(Boolean);
+
+        res.status(200).json({
+            ...nbaApiResult,
+            source: 'python nba_api + The Odds API',
+            oddsProvider: 'The Odds API',
+            oddsRegion: process.env.ODDS_API_REGION || 'us',
+            preferredBookmaker: process.env.ODDS_API_BOOKMAKER || 'draftkings',
+            oddsRequestsRemaining: oddsResult.requestsRemaining,
+            oddsRequestsUsed: oddsResult.requestsUsed,
+            count: picksWithOdds.length,
+            warnings,
+            picks: picksWithOdds,
+        });
+    } catch (error) {
+        console.error('gambler nba_api + sportsbook odds error:', error);
+
+        res.status(500).json({
+            source: 'python nba_api + The Odds API',
+            oddsProvider: 'The Odds API',
+            date: new Date().toLocaleDateString(),
+            error: error.message || 'Failed to run nba_api and sportsbook odds',
+            picks: [],
+        });
+    }
+});
+
+function cleanTeamName(city, name, abbreviation) {
+    const c = String(city || '').trim();
+    const n = String(name || '').trim();
+    const a = String(abbreviation || '').trim();
+
+    if (c && n) return `${c} ${n}`;
+    if (n) return n;
+    if (a) return a;
+    return 'Unknown Team';
+}
+
+function gamblerNumber(value, fallback = 0) {
+    const num = Number(value);
+    return Number.isFinite(num) ? num : fallback;
+}
+
+function gamblerOddsFromConfidence(confidence) {
+    if (confidence >= 70) return '-160';
+    if (confidence >= 64) return '-130';
+    if (confidence >= 58) return '-110';
+    if (confidence >= 52) return '+105';
+    return '+125';
+}
+
+function buildGamblerPick({ homeName, awayName, homeAbbrev, awayAbbrev, homeStats, awayStats }) {
+    const homeWinPct = gamblerNumber(homeStats.W_PCT);
+    const awayWinPct = gamblerNumber(awayStats.W_PCT);
+
+    const homePts = gamblerNumber(homeStats.PTS);
+    const awayPts = gamblerNumber(awayStats.PTS);
+
+    const homeReb = gamblerNumber(homeStats.REB);
+    const awayReb = gamblerNumber(awayStats.REB);
+
+    const homeAst = gamblerNumber(homeStats.AST);
+    const awayAst = gamblerNumber(awayStats.AST);
+
+    const homePlusMinus = gamblerNumber(homeStats.PLUS_MINUS);
+    const awayPlusMinus = gamblerNumber(awayStats.PLUS_MINUS);
+
+    const homeScore =
+        homeWinPct * 45 +
+        homePts * 0.12 +
+        homeReb * 0.04 +
+        homeAst * 0.06 +
+        homePlusMinus * 1.15 +
+        2.5;
+
+    const awayScore =
+        awayWinPct * 45 +
+        awayPts * 0.12 +
+        awayReb * 0.04 +
+        awayAst * 0.06 +
+        awayPlusMinus * 1.15;
+
+    const diff = homeScore - awayScore;
+    const homeSelected = diff >= 0;
+
+    const rawConfidence = 55 + Math.abs(diff) * 1.65;
+    const confidence = Math.round(Math.min(82, Math.max(52, rawConfidence)) * 10) / 10;
+
+    const edgeValue = Math.max(1.2, Math.min(9.8, Math.abs(diff) * 0.42));
+
+    return {
+        selectedTeam: homeSelected ? homeName : awayName,
+        selectedAbbrev: homeSelected ? homeAbbrev : awayAbbrev,
+        confidence,
+        odds: gamblerOddsFromConfidence(confidence),
+        edge: `+${edgeValue.toFixed(1)}%`,
+    };
+}
+
 app.get('/api/team-gamelog', async (req, res) => {
     const { teamId, limit, season, seasonType } = req.query;
     if (!teamId) return res.status(400).json({ error: 'teamId required' });
@@ -1129,7 +1615,7 @@ app.post('/api/notes/delete', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5005;
 const server = app.listen(PORT, () => {
     console.log(`✅ Backend server is running on http://localhost:${PORT}`);
 });

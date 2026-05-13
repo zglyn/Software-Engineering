@@ -1,4 +1,6 @@
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -9,16 +11,895 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(180deg, #0f0f12 0%, #1a1a1f 100%);
+  background: linear-gradient(180deg, #0f0f12 0%, #17171c 100%);
   color: #f4f4f5;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* Force gambler page to be clean and centered */
+.gamblerPageWrapper {
+  min-height: 100vh;
+  width: 100%;
+  background:
+    radial-gradient(circle at top right, rgba(99, 102, 241, 0.16), transparent 34%),
+    radial-gradient(circle at 12% 18%, rgba(124, 58, 237, 0.12), transparent 30%),
+    linear-gradient(180deg, #0f0f12 0%, #16161b 100%);
+}
+
+/* Hide old feed/sidebar/header pieces on gambler page */
+.gamblerPageWrapper .feedSidebar,
+.gamblerPageWrapper .gamblerSidebar,
+.gamblerPageWrapper .feedPageHeader,
+.gamblerPageWrapper .gamblerHeader,
+.gamblerPageWrapper .feedHeaderCenter,
+.gamblerPageWrapper .feedProfileBtn {
+  display: none !important;
+}
+
+.gamblerPageWrapper .feedPage {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.gamblerPageWrapper .feedLayout {
+  margin: 0 auto !important;
+}
+
+.gamblerPage {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 56px 0 72px !important;
+  box-sizing: border-box;
+}
+
+.gamblerLayout {
+  width: min(1180px, calc(100vw - 48px)) !important;
+  max-width: 1180px !important;
+  margin: 0 auto !important;
+}
+
+.gamblerHeroPro {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px;
+  padding: 34px 36px;
+  margin: 0 auto 20px;
+  border: 1px solid rgba(99, 102, 241, 0.26);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(99, 102, 241, 0.18), transparent 30%),
+    linear-gradient(135deg, rgba(28, 28, 34, 0.98), rgba(18, 18, 23, 0.96));
+  box-shadow: 0 22px 64px rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+}
+
+.gamblerHeroPro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.16), transparent 42%);
+  opacity: 0.38;
+}
+
+.gamblerHeroContent,
+.gamblerHeroPanel {
+  position: relative;
+  z-index: 1;
+}
+
+.gamblerEyebrow {
+  margin-bottom: 12px;
+  color: #a5b4fc;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+}
+
+.gamblerHeroTitle {
+  max-width: 780px;
+  margin: 0;
+  color: #f4f4f5;
+  font-size: clamp(3rem, 6vw, 5.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.07em;
+}
+
+.gamblerHeroSubtitle {
+  max-width: 680px;
+  margin: 18px 0 0;
+  color: #c7c7cf;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.gamblerHeroActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.gamblerPrimaryBtn,
+.gamblerSecondaryBtn {
+  border: none;
+  border-radius: 14px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 850;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.gamblerPrimaryBtn {
+  padding: 12px 18px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.24);
+}
+
+.gamblerPrimaryBtn:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #4f46e5, #6d28d9);
+  box-shadow: 0 14px 34px rgba(99, 102, 241, 0.3);
+}
+
+.gamblerSecondaryBtn {
+  padding: 10px 14px;
+  color: #e5e7eb;
+  background: #27272a;
+  border: 1px solid #3d3d45;
+}
+
+.gamblerSecondaryBtn:hover {
+  transform: translateY(-1px);
+  border-color: #6366f1;
+}
+
+.gamblerToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #a1a1aa;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.gamblerToggle input {
+  accent-color: #6366f1;
+}
+
+.gamblerHeroPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.gamblerDatePill {
+  align-self: flex-end;
+  width: fit-content;
+  border: 1px solid #6366f1;
+  border-radius: 999px;
+  padding: 10px 18px;
+  color: #c7d2fe;
+  background: rgba(99, 102, 241, 0.1);
+  font-weight: 850;
+  letter-spacing: 0.03em;
+}
+
+.gamblerTopPick {
+  border: 1px solid #303039;
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(15, 15, 18, 0.55);
+}
+
+.gamblerTopPick span,
+.gamblerTopPick small {
+  display: block;
+  color: #8b8b92;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.gamblerTopPick strong {
+  display: block;
+  margin: 7px 0;
+  color: #f4f4f5;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.gamblerStatsGridPro {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 auto 18px;
+}
+
+.gamblerStatCardPro {
+  min-height: 112px;
+  padding: 18px;
+  border: 1px solid #2d2d33;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(32, 32, 39, 0.96), rgba(24, 24, 30, 0.96));
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.18);
+}
+
+.gamblerStatCardPro small {
+  display: block;
+  margin-bottom: 8px;
+  color: #9ca3af;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.gamblerStatCardPro strong {
+  display: block;
+  color: #f4f4f5;
+  font-size: clamp(1.55rem, 2vw, 2.15rem);
+  line-height: 1.12;
+  word-break: break-word;
+}
+
+.gamblerStatCardPro span {
+  display: block;
+  margin-top: 8px;
+  color: #6b6b72;
+  font-size: 0.88rem;
+}
+
+.gamblerTabsPro {
+  display: flex;
+  width: fit-content;
+  gap: 4px;
+  padding: 4px;
+  margin: 0 auto 20px;
+  border: 1px solid #2d2d33;
+  border-radius: 999px;
+  background: rgba(30, 30, 36, 0.88);
+}
+
+.gamblerTabsPro button {
+  border: none;
+  border-radius: 999px;
+  padding: 9px 16px;
+  background: transparent;
+  color: #8b8b92;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.gamblerTabsPro button:hover {
+  color: #f4f4f5;
+}
+
+.gamblerTabsPro .gamblerTabActive {
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #ffffff;
+}
+
+.gamblerContentGridPro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) 390px;
+  gap: 22px;
+  align-items: start;
+  justify-content: center;
+}
+
+.gamblerMainPanel,
+.gamblerSideCard,
+.gamblerStateCard {
+  border: 1px solid #2d2d33;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(31, 31, 38, 0.96), rgba(23, 23, 29, 0.96));
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+}
+
+.gamblerMainPanel {
+  padding: 20px;
+}
+
+.gamblerStateCard {
+  padding: 22px;
+}
+
+.gamblerPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.gamblerPanelHeader h2,
+.gamblerSideCard h2 {
+  margin: 0;
+  color: #f4f4f5;
+  font-size: 1.35rem;
+  letter-spacing: -0.025em;
+}
+
+.gamblerPanelHeader p,
+.gamblerSideCard p {
+  margin: 6px 0 0;
+  color: #a1a1aa;
+  line-height: 1.45;
+}
+
+.gamblerHeaderActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.gamblerPickListPro {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gamblerPickCardPro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 128px;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #2d2d33;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(34, 34, 41, 0.98), rgba(25, 25, 31, 0.98));
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.gamblerPickCardPro:hover {
+  transform: translateY(-1px);
+  border-color: rgba(99, 102, 241, 0.72);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.12);
+}
+
+.gamblerSportsbookCard {
+  display: block;
+}
+
+.gamblerBookHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.gamblerBookHeader h3 {
+  margin: 0;
+  color: #f4f4f5;
+  font-size: 1.18rem;
+  line-height: 1.3;
+}
+
+.gamblerBookHeader small {
+  display: block;
+  margin-top: 6px;
+  color: #8b8b92;
+}
+
+.gamblerPickMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.gamblerPickMeta span {
+  border: 1px solid #3d3d45;
+  border-radius: 999px;
+  padding: 4px 9px;
+  color: #a1a1aa;
+  background: #1e1e24;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.gamblerPickLeft h3 {
+  margin: 0;
+  color: #f4f4f5;
+  font-size: 1.08rem;
+  line-height: 1.3;
+}
+
+.gamblerPickLeft p {
+  margin: 10px 0 4px;
+  color: #d4d4d8;
+  font-size: 0.98rem;
+}
+
+.gamblerPickLeft small {
+  color: #8b8b92;
+  font-size: 0.86rem;
+}
+
+.gamblerPickRight {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gamblerOddsPro,
+.gamblerEdgePro {
+  border: 1px solid #2d2d33;
+  border-radius: 14px;
+  padding: 12px;
+  background: #1e1e24;
+  text-align: center;
+}
+
+.gamblerOddsPro strong,
+.gamblerEdgePro strong {
+  display: block;
+  color: #f4f4f5;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.gamblerOddsPro span,
+.gamblerEdgePro span {
+  display: block;
+  margin-top: 6px;
+  color: #6b6b72;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gamblerBookTable {
+  margin-top: 18px;
+  border: 1px solid #303039;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #1e1e24;
+}
+
+.gamblerBookRow {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.gamblerBookRowHead {
+  background: #15151b;
+}
+
+.gamblerBookRowHead span {
+  padding: 11px 14px;
+  color: #8b8b92;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.gamblerBookMarket {
+  display: flex;
+  align-items: center;
+  padding: 18px 14px;
+  background: #1b1b22;
+  color: #f4f4f5;
+  font-weight: 900;
+  border-top: 1px solid #303039;
+  border-right: 1px solid #303039;
+}
+
+.gamblerBookCell {
+  min-height: 58px;
+  padding: 15px 14px;
+  background: #24242b;
+  border-top: 1px solid #303039;
+  border-right: 1px solid #303039;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: default;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.gamblerBookCell:last-child {
+  border-right: none;
+}
+
+.gamblerBookCell span {
+  display: block;
+  margin-bottom: 5px;
+  color: #a1a1aa;
+  font-size: 0.73rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gamblerBookCell strong {
+  color: #f4f4f5;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.gamblerBookCellActive {
+  background:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(124, 58, 237, 0.13)),
+    #262633;
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.75);
+}
+
+.gamblerModelStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.gamblerModelStrip div {
+  border: 1px solid #303039;
+  border-radius: 14px;
+  padding: 12px;
+  background: #202027;
+}
+
+.gamblerModelStrip span {
+  display: block;
+  margin-bottom: 5px;
+  color: #8b8b92;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.gamblerModelStrip strong {
+  color: #f4f4f5;
+  font-size: 0.95rem;
+}
+
+.gamblerConfidencePro {
+  grid-column: 1 / -1;
+}
+
+.gamblerConfidencePro > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #a1a1aa;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.gamblerConfidencePro strong {
+  color: #f4f4f5;
+}
+
+.gamblerConfidenceTrack {
+  height: 10px;
+  border: 1px solid #2d2d33;
+  border-radius: 999px;
+  background: #1e1e24;
+  overflow: hidden;
+  margin-top: 14px;
+}
+
+.gamblerConfidenceFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+}
+
+.gamblerOddsWarning {
+  margin: 10px 0 0;
+  color: #fbbf24;
+  font-size: 0.82rem;
+}
+
+.gamblerSaveBtn {
+  border: 1px solid #3d3d45;
+  border-radius: 14px;
+  background: #27272a;
+  color: #f4f4f5;
+  padding: 10px 12px;
+  font-weight: 850;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.gamblerSaveBtn:hover {
+  border-color: #6366f1;
+  background: #2d2d35;
+  transform: translateY(-1px);
+}
+
+.gamblerSidePanel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: sticky;
+  top: 22px;
+}
+
+.gamblerSideCard {
+  padding: 22px;
+}
+
+.gamblerFormPro {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.gamblerFormPro label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.gamblerFormPro label span {
+  color: #a1a1aa;
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.gamblerFormPro input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #2d2d33;
+  border-radius: 15px;
+  padding: 13px 14px;
+  background: #1e1e24;
+  color: #f4f4f5;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.gamblerFormPro input::placeholder {
+  color: #6b6b72;
+}
+
+.gamblerFormPro input:focus {
+  border-color: #6366f1;
+}
+
+.gamblerFullBtn {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.gamblerNoteList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.gamblerNoteList div {
+  border: 1px solid #2d2d33;
+  border-radius: 14px;
+  padding: 13px;
+  background: #27272a;
+}
+
+.gamblerNoteList span {
+  display: block;
+  margin-bottom: 5px;
+  color: #818cf8;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gamblerNoteList p {
+  margin: 0;
+  color: #d4d4d8;
+  font-size: 0.9rem;
+}
+
+.gamblerSectionTitle {
+  color: #f4f4f5;
+}
+
+.gamblerEmptyBox {
+  border: 1px dashed #3d3d45;
+  border-radius: 16px;
+  padding: 24px;
+  color: #a1a1aa;
+  background: rgba(39, 39, 42, 0.55);
+}
+
+.gamblerResultGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.gamblerResultGrid div {
+  border: 1px solid #2d2d33;
+  border-radius: 14px;
+  padding: 13px;
+  background: #27272a;
+}
+
+.gamblerResultGrid small {
+  display: block;
+  margin-bottom: 6px;
+  color: #8b8b92;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gamblerResultGrid strong {
+  color: #f4f4f5;
+  font-size: 1.1rem;
+}
+
+.gamblerHistoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gamblerHistoryCard {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) repeat(4, minmax(100px, 0.7fr));
+  gap: 12px;
+  align-items: center;
+  border: 1px solid #2d2d33;
+  border-radius: 16px;
+  padding: 14px;
+  background: #27272a;
+}
+
+.gamblerHistoryCard div {
+  min-width: 0;
+}
+
+.gamblerHistoryCard strong {
+  display: block;
+  color: #f4f4f5;
+}
+
+.gamblerHistoryCard span,
+.gamblerHistoryCard small {
+  display: block;
+  color: #8b8b92;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 1180px) {
+  .gamblerLayout {
+    width: min(94vw, 1180px) !important;
+  }
+
+  .gamblerContentGridPro {
+    grid-template-columns: 1fr;
+  }
+
+  .gamblerSidePanel {
+    position: static;
+  }
+}
+
+@media (max-width: 1100px) {
+  .gamblerHeroPro {
+    grid-template-columns: 1fr;
+  }
+
+  .gamblerHeroPanel {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 900px) {
+  .gamblerHistoryCard {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 880px) {
+  .gamblerStatsGridPro {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gamblerPickCardPro {
+    grid-template-columns: 1fr;
+  }
+
+  .gamblerPickRight {
+    flex-direction: row;
+  }
+
+  .gamblerOddsPro,
+  .gamblerEdgePro {
+    flex: 1;
+  }
+}
+
+@media (max-width: 850px) {
+  .gamblerHeroPro {
+    padding: 26px;
+  }
+
+  .gamblerBookRow {
+    grid-template-columns: 92px minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .gamblerModelStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .gamblerLayout {
+    width: 92% !important;
+  }
+
+  .gamblerHeroTitle {
+    font-size: 2.4rem;
+  }
+
+  .gamblerStatsGridPro {
+    grid-template-columns: 1fr;
+  }
+
+  .gamblerTabsPro {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .gamblerTabsPro button {
+    white-space: nowrap;
+  }
+
+  .gamblerHeroPanel {
+    flex-direction: column;
+  }
+
+  .gamblerDatePill {
+    align-self: flex-start;
+  }
+
+  .gamblerBookHeader {
+    flex-direction: column;
+  }
 }

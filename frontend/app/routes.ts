@@ -16,6 +16,7 @@ export default [
     route("feed", "routes/feed.tsx"),
     route("players", "routes/players.tsx"),
     route("stats", "routes/stats.tsx"),
+    route("gambler", "routes/gambler.tsx"),
     route("management", "routes/management.tsx"),
     route("manage-coaches", "routes/ManageCoachesPage.tsx"),
     route("manage-players", "routes/ManagePlayersPage.tsx"),

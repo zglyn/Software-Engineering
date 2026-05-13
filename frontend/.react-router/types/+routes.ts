@@ -38,6 +38,9 @@ type Pages = {
   "/stats": {
     params: {};
   };
+  "/gambler": {
+    params: {};
+  };
   "/management": {
     params: {};
   };
@@ -93,7 +96,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/auth/callback" | "/auth/logout" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile" | "/*";
+    page: "/" | "/login" | "/auth/callback" | "/auth/logout" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/gambler" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile" | "/*";
   };
   "routes/login/index.tsx": {
     id: "routes/login/index";
@@ -109,7 +112,7 @@ type RouteFiles = {
   };
   "layouts/protected-layout.tsx": {
     id: "layouts/protected-layout";
-    page: "/" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile";
+    page: "/" | "/onboarding" | "/select" | "/feed" | "/players" | "/stats" | "/gambler" | "/management" | "/manage-coaches" | "/manage-players" | "/compare" | "/compare-stats-only" | "/compare-money" | "/uploads" | "/video/:id" | "/player/:id" | "/team/:id" | "/create-team" | "/insights" | "/profile";
   };
   "routes/root-redirect.ts": {
     id: "routes/root-redirect";
@@ -134,6 +137,10 @@ type RouteFiles = {
   "routes/stats.tsx": {
     id: "routes/stats";
     page: "/stats";
+  };
+  "routes/gambler.tsx": {
+    id: "routes/gambler";
+    page: "/gambler";
   };
   "routes/management.tsx": {
     id: "routes/management";
@@ -205,6 +212,7 @@ type RouteModules = {
   "routes/feed": typeof import("./app/routes/feed.tsx");
   "routes/players": typeof import("./app/routes/players.tsx");
   "routes/stats": typeof import("./app/routes/stats.tsx");
+  "routes/gambler": typeof import("./app/routes/gambler.tsx");
   "routes/management": typeof import("./app/routes/management.tsx");
   "routes/ManageCoachesPage": typeof import("./app/routes/ManageCoachesPage.tsx");
   "routes/ManagePlayersPage": typeof import("./app/routes/ManagePlayersPage.tsx");
