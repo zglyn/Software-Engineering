@@ -1,3 +1,6 @@
 nba_api
 pandas
 requests
+torch
+torchvision
+cv2
