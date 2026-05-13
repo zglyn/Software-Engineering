@@ -335,7 +335,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } catch {
     feedForYou = [];
   }
-  if (userId && (isCoach || isPlayer || isAdmin)) {
+  // Always merge notes for any signed-in userId. Backend only returns notes for this viewer
+  // (coach inbox, linked player thread, etc.). Do not gate on Cognito groups: roster-linked
+  // accounts may not have `player` / `players` in groups but still see notes on /profile.
+  if (userId) {
     try {
       const nr = await fetch(
         `${backendBaseUrl}/api/notes/feed-for-viewer?viewerId=${encodeURIComponent(userId)}`

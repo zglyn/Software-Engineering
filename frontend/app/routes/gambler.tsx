@@ -78,7 +78,7 @@ type SimulationResult = {
   bestPick: string;
 };
 
-const API_BASE = "http://localhost:3001";
+const API_BASE = "https://software-engineering-production-a351.up.railway.app";
 const SAVED_PICKS_KEY = "baller_saved_gambler_picks";
 const SIM_HISTORY_KEY = "baller_gambler_sim_history";
 
@@ -361,7 +361,7 @@ export default function GamblerPage() {
       picksToUse.length === 0
         ? 0
         : picksToUse.reduce((sum, pick) => sum + Number(pick.confidence || 0), 0) /
-          picksToUse.length;
+        picksToUse.length;
 
     const result: SimulationResult = {
       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,

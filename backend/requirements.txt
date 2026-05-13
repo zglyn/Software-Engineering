@@ -1,6 +1,6 @@
 nba_api
 pandas
 requests
+opencv-python-headless
 torch
 torchvision
-cv2
